@@ -1,0 +1,128 @@
+omg: 1
+lifecycle:
+  startup:
+    command: ["stripe"]
+info:
+  version: 1.0.0
+  title: Stripe 
+  description: This is a Stripe service
+  contact:
+    name: RohitS
+    url: https://github.com/ht68rohit
+    email: rohits@heptrace.com
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT 
+actions:
+  createcharge:
+    help: Create a New Charge
+    http:
+      port: 3000
+      method: post
+      path: /createcharge
+      contentType: application/json
+    arguments:
+      amount:
+        type: int
+        in: requestBody
+        required: true
+        help: The amount of charge to be created
+      currency: 
+        type: string
+        in: requestBody
+        required: true
+        help: The type of currency
+      description: 
+        type: string
+        in: requestBody
+        required: true
+        help: The description for charge
+    output:   
+      type: object
+      properties:
+        amount:
+          help: The amount of charge created
+          type: int
+        amount_refunded:
+          help: The refunded amount
+          type: int
+        balance_transaction:
+          help: The object of balance transaction with details of amount, created, currency, description, id, recipient, source etc
+          type: object
+        fraud_details:
+          help: The object of fraud details with user and stripe report
+          type: object
+        id:
+          help: The ID for charge created
+          type: string
+        receipt_url:
+          help: The url for recipt from
+          type: string 
+        source:
+          help: The source details
+          type: object
+  getbalance:
+    help: Get your stripe balance
+    http:
+      port: 3000
+      method: get
+      path: /getbalance
+      contentType: application/json
+    output: 
+      type: object
+      properties:
+        available:
+          help: The available balance details.
+          type: object
+        livemode:
+          help: The mode of operation
+          type: boolean
+        pending:
+          help: The pending balance details.
+          type: object
+  createpaymentintent:
+    help: Create a new payment intent
+    http:
+      port: 3000
+      method: post
+      path: /createpaymentintent
+      contentType: application/json
+    arguments:
+      amount:
+        type: int
+        in: requestBody
+        required: true
+        help: The amount of payment to be created
+      currency: 
+        type: string
+        in: requestBody
+        required: true
+        help: The type of currency
+    output:   
+      type: object
+      properties:
+        amount:
+          help: The amount of payment is created
+          type: int
+        charges:
+          help: The object of charges with total count, url and data
+          type: object
+        client_secret:
+          help: The client payment secret key 
+          type: string
+        currency:
+          help: The type of currency
+          type: string
+        last_payment_error:
+          help: The error message from last payment
+          type : string
+        payment_method_types:
+          help: The payment method type
+          type: object
+environment:
+  SECRET_KEY:
+    type: string
+    required: true
+    help: secret key for stripe
+    
+    
