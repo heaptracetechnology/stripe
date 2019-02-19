@@ -2,7 +2,11 @@ package route
 
 import (
     "github.com/gorilla/mux"
-    "github.com/user/stripe/StripeOperation"
+    "github.com/user/stripe/BalanceOperation"
+    "github.com/user/stripe/ChargeOperation"
+    "github.com/user/stripe/CustomerOperation"
+    "github.com/user/stripe/PaymentIntentOperation"
+    "github.com/user/stripe/SourceOperation"
     "log"
     "net/http"
 )
@@ -21,19 +25,67 @@ var routes = Routes{
         "CreateCharge",
         "POST",
         "/createcharge",
-        StripeOperation.CreateCharge,
+        ChargeOperation.CreateCharge,
     },
     Route{
         "GetBalance",
         "GET",
         "/getbalance",
-        StripeOperation.GetBalance,
+        BalanceOperation.GetBalance,
     },
     Route{
         "CreatePaymentIntent",
         "POST",
         "/createpaymentintent",
-        StripeOperation.CreatePaymentIntent,
+        PaymentIntentOperation.CreatePaymentIntent,
+    },
+    Route{
+        "RetrievePaymentIntent",
+        "PUT",
+        "/retrievepaymentIntent/{paymentintent_id}",
+        PaymentIntentOperation.RetrievePaymentIntent,
+    },
+    Route{
+        "UpdatePaymentIntent",
+        "PUT",
+        "/updatepaymentintent/{paymentintent_id}",
+        PaymentIntentOperation.UpdatePaymentIntent,
+    },
+    Route{
+        "ConfirmPaymentIntent",
+        "POST",
+        "/confirmpaymentintent",
+        PaymentIntentOperation.ConfirmPaymentIntent,
+    },
+    Route{
+        "CapturePaymentIntent",
+        "POST",
+        "/capturepaymentintent/{paymentintent_id}",
+        PaymentIntentOperation.CapturePaymentIntent,
+    },
+    Route{
+        "CancelPaymentIntent",
+        "POST",
+        "/cancelpaymentintent/{paymentintent_id}",
+        PaymentIntentOperation.CancelPaymentIntent,
+    },
+    Route{
+        "ListAllPaymentIntent",
+        "GET",
+        "/listallpaymentintent",
+        PaymentIntentOperation.ListAllPaymentIntent,
+    },
+    Route{
+        "CreateSource",
+        "POST",
+        "/createsource",
+        SourceOperation.CreateSource,
+    },
+    Route{
+        "CreateCustomer",
+        "POST",
+        "/createcustomer",
+        CustomerOperation.CreateCustomer,
     },
 }
 

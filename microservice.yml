@@ -7,7 +7,7 @@ info:
   title: Stripe 
   description: This is a Stripe service
   contact:
-    name: RohitS
+    name: Rohit Shetty
     url: https://github.com/ht68rohit
     email: rohits@heptrace.com
   license:
@@ -37,6 +37,11 @@ actions:
         in: requestBody
         required: true
         help: The description for charge
+      # set_source:
+      #   type: object
+      #   in: requestBody
+      #   required: true
+      #   help: The source for charge
     output:   
       type: object
       properties:
@@ -98,6 +103,11 @@ actions:
         in: requestBody
         required: true
         help: The type of currency
+      payment_method_types:
+        type: any
+        in: requestBody
+        required: false
+        help: The type of payment method
     output:   
       type: object
       properties:
@@ -119,6 +129,261 @@ actions:
         payment_method_types:
           help: The payment method type
           type: object
+  retrievepaymentintent:
+    help: Retrieves the details of a PaymentIntent that has previously been created
+    http:
+      port: 3000
+      method: put
+      path: /retrievepaymentIntent/{{paymentintent_id}}
+      contentType: application/json
+    arguments:
+      paymentintent_id: 
+        type: string
+        in: path
+        required: true
+        help: The payment intent code
+    output:   
+      type: object
+  updatepaymentintent:
+    help: Updates a PaymentIntent object
+    http:
+      port: 3000
+      method: put
+      path: /updatepaymentintent/{{paymentintent_id}}
+      contentType: application/json
+    arguments:
+      paymentintent_id: 
+        type: string
+        in: path
+        required: true
+        help: The payment intent code
+      amount:
+        type: int
+        in: requestBody
+        required: false
+        help: The payment amount
+      application_fee_amount:
+        type: int
+        in: requestBody
+        required: false
+        help: The application fee amount
+      currency:
+        type: string
+        in: requestBody
+        required: false
+        help: The type of currency
+      customer:
+        type: string
+        in: requestBody
+        required: false
+        help: The customer id payment
+      description:
+        type: string
+        in: requestBody
+        required: false
+        help: The payment description
+      receipt_email:
+        type: string
+        in: requestBody
+        required: false
+        help: The receipt email address
+      save_payment_method:
+        type: boolean
+        in: requestBody
+        required: false
+        help: The payment method to save (true/false)
+      shipping:
+        type: object
+        in: requestBody
+        required: false
+        help: Shipping information for this PaymentIntent
+      source:
+        type: string
+        in: requestBody
+        required: false
+        help: The ID of the Source object to attach to this PaymentIntent
+      transfer_group:
+        type: string
+        in: requestBody
+        required: false
+        help: A string that identifies the resulting payment as part of a group. transfer_group may only be provided if it has not been set
+    output:
+      type: object
+      properties:
+        amount:
+          type: int
+          help: The payment amount
+        application_fee:
+          type: int
+          help: The application fee amount
+        charges:
+          type: object
+          help: The charge object with details
+        client_secret:
+          type: string
+          help: The client secret id
+        currency:
+          type: string
+          help: The type of currency
+        receipt_email:
+          type: string
+          help: The receipt email address
+        shipping:
+          type: object
+          help: Shipping information for this PaymentIntent
+        source:
+          type: string
+          help: The ID of the Source object to attach to this PaymentIntent
+  confirmpaymentintent:
+    help: Updates a PaymentIntent object
+    http:
+      port: 3000
+      method: post
+      path: /confirmpaymentintent
+      contentType: application/json
+    arguments:
+      paymentintent_id: 
+        type: string
+        in: requestBody
+        required: true
+        help: The payment intent code
+    output:
+      type: object
+  capturepaymentintent:
+    help: Updates a PaymentIntent object
+    http:
+      port: 3000
+      method: post
+      path: /capturepaymentintent/{{paymentintent_id}}
+      contentType: application/json
+    arguments:
+      paymentintent_id: 
+        type: string
+        in: path
+        required: true
+        help: The payment intent code
+      amount_to_capture:
+        type: int
+        in: requestBody
+        required: false
+        help: The payment intent code
+      application_fee_amount:
+        type: int
+        in: requestBody
+        required: false
+        help: The payment intent code
+    output:
+      type: object
+  cancelpaymentintent:
+    help: Cancel PaymentIntent object
+    http:
+      port: 3000
+      method: post
+      path: /cancelpaymentintent/{{paymentintent_id}}
+      contentType: application/json
+    arguments:
+      paymentintent_id: 
+        type: string
+        in: path
+        required: true
+        help: The payment intent code
+    output:
+      type: object
+      properties:
+        amount:
+          help: 
+          type:
+        canceled_at:
+          help: The canceled payment intent
+          type: int
+        charges:
+          help: The charge object
+          type: object
+        currency:
+          help: The currency type
+          type: string
+        description:
+          help: The description for cancelation payment initent
+          type: string
+        status:
+          help: The status as "canceled"
+          type: string
+  listallpaymentintent:
+    help: List all PaymentIntent object
+    http:
+      port: 3000
+      method: get
+      path: /listallpaymentintent
+      contentType: application/json
+    output:
+      type: string
+      properties:
+        amount:
+          help: The amount of payment is created
+          type: int
+        charges:
+          help: The object of charges with total count, url and data
+          type: object
+        client_secret:
+          help: The client payment secret key 
+          type: string
+        currency:
+          help: The type of currency
+          type: string
+        last_payment_error:
+          help: The error message from last payment
+          type : string
+        payment_method_types:
+          help: The payment method type
+          type: object
+        status:
+          help: The status of payment intent
+          type: string
+  createsource:
+    help: Create source for stripe
+    http:
+      port: 3000
+      method: post
+      path: /createsource
+      contentType: application/json
+    arguments:
+      transfertype: 
+        type: string
+        in: requestBody
+        required: true
+        help: The payment intent code
+      currency:
+        type: string
+        in: requestBody
+        required: false
+        help: The payment intent code
+      owner:
+        type: string
+        in: requestBody
+        required: false
+        help: The payment intent code
+    output:
+      type: object
+  createcustomer:
+    help: Create customer for stripe
+    http:
+      port: 3000
+      method: post
+      path: /createcustomer
+      contentType: application/json
+    arguments:
+      description:
+        type: string
+        in: requestBody
+        required: false
+        help: The description for customer 
+      email:
+        type: string
+        in: requestBody
+        required: false
+        help: The customer email address
+    output:
+      type: object
 environment:
   SECRET_KEY:
     type: string
