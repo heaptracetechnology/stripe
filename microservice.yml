@@ -519,24 +519,24 @@ actions:
     output:
       type: object
       properties:
-      id:
-        help: The source ID
-        type: string
-      object:
-        help: The type of object
-        type: string
-      ach_credit_transfer:
-        help: The type of transfer
-        type: object
-      amount:
-        help: The amount of source
-        type: int
-      client_secret:
-        help: The source ID 
-        type: string
-      receiver:
-        help: The object of receiver object
-        type: object
+        id:
+          help: The source ID
+          type: string
+        object:
+          help: The type of object
+          type: string
+        ach_credit_transfer:
+          help: The type of transfer
+          type: object
+        amount:
+          help: The amount of source
+          type: int
+        client_secret:
+          help: The source ID 
+          type: string
+        receiver:
+          help: The object of receiver object
+          type: object
   createcustomer:
     help: Create customer for stripe
     http:
