@@ -16,8 +16,7 @@ func CreateCustomer(w http.ResponseWriter, r *http.Request) {
 	var param *stripe.CustomerParams
 	err := decoder.Decode(&param)
 	if err != nil {
-		msgbytes, _ := json.Marshal(err)
-		writeJsonResponse(w, msgbytes)
+		WriteErrorResponse(w, err)
 		return
 	}
 
@@ -25,15 +24,19 @@ func CreateCustomer(w http.ResponseWriter, r *http.Request) {
 
 	cus, err := customer.New(param)
 	if err != nil {
-		msgbytes, _ := json.Marshal(err)
-		writeJsonResponse(w, msgbytes)
+		WriteErrorResponse(w, err)
 		return
 	}
 	bytes, _ := json.Marshal(cus)
-	writeJsonResponse(w, bytes)
+	WriteJsonResponse(w, bytes, http.StatusOK)
 }
 
-func writeJsonResponse(w http.ResponseWriter, bytes []byte) {
+func WriteErrorResponse(w http.ResponseWriter, err error) {
+	msgbytes, _ := json.Marshal(err)
+	WriteJsonResponse(w, msgbytes, http.StatusBadRequest)
+}
+func WriteJsonResponse(w http.ResponseWriter, bytes []byte, code int) {
+	w.WriteHeader(code)
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	w.Write(bytes)
 }

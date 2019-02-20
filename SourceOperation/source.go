@@ -24,49 +24,30 @@ func CreateSource(w http.ResponseWriter, r *http.Request) {
 	err := decoder.Decode(&param)
 	fmt.Println("param : ", param)
 	if err != nil {
-		msgbytes, _ := json.Marshal(err)
-		writeJsonResponse(w, msgbytes)
+		WriteErrorResponse(w, err)
 		return
 	}
-	// if err != nil {
-	// 	msgbytes, _ := json.Marshal(err)
-	// 	writeJsonResponse(w, msgbytes)
-	// 	return
-	// }
 
 	param.Type = stripe.String(tranftype)
 
 	s, errr := source.New(param)
 	if errr != nil {
-		msgbytes, _ := json.Marshal(err)
-		writeJsonResponse(w, msgbytes)
+		WriteErrorResponse(w, err)
 		return
 	}
 	fmt.Println(s)
 	bytes, _ := json.Marshal(s)
-	writeJsonResponse(w, bytes)
+	WriteJsonResponse(w, bytes, http.StatusOK)
 
 }
 
-// //Attach Source
-// func AttachSource(w http.ResponseWriter, r *http.Request) {
-// 	stripe.Key = "sk_test_gENQu8ecxwwMUsWlgsQeqbgI"
+func WriteErrorResponse(w http.ResponseWriter, err error) {
+	msgbytes, _ := json.Marshal(err)
+	WriteJsonResponse(w, msgbytes, http.StatusBadRequest)
+}
 
-// 	params := &stripe.CustomerSourceParams{
-// 		Customer: stripe.String("cus_EYvkRauOZ0rXXO"),
-// 		Source: &stripe.SourceParams{
-// 			Token: stripe.String("src_1E5mUKJytX7n0OoXQoNS58Q9"),
-// 		},
-// 	}
-// 	s, err := paymentsource.New(params)
-// 	if err != nil {
-// 		log.Fatalln(err)
-// 	}
-// 	bytes, _ := json.Marshal(s)
-// 	writeJsonResponse(w, bytes)
-// }
-
-func writeJsonResponse(w http.ResponseWriter, bytes []byte) {
+func WriteJsonResponse(w http.ResponseWriter, bytes []byte, code int) {
+	w.WriteHeader(code)
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	w.Write(bytes)
 }

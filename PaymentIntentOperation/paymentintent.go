@@ -180,6 +180,7 @@ func ListAllPaymentIntent(w http.ResponseWriter, r *http.Request) {
 	bytes, err := json.Marshal(&listpaymentintent)
 	if err != nil {
 		WriteErrorResponse(w, err)
+		return
 	}
 	WriteJsonResponse(w, bytes, http.StatusOK)
 
