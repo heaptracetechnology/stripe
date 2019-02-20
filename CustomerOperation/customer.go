@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"github.com/stripe/stripe-go"
 	"github.com/stripe/stripe-go/customer"
-	"log"
 	"net/http"
 	"os"
 )
@@ -26,7 +25,9 @@ func CreateCustomer(w http.ResponseWriter, r *http.Request) {
 
 	cus, err := customer.New(param)
 	if err != nil {
-		log.Fatalln(err)
+		msgbytes, _ := json.Marshal(err)
+		writeJsonResponse(w, msgbytes)
+		return
 	}
 	bytes, _ := json.Marshal(cus)
 	writeJsonResponse(w, bytes)

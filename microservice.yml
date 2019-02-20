@@ -14,7 +14,7 @@ info:
     name: MIT
     url: https://opensource.org/licenses/MIT 
 actions:
-  createcharge:
+  create_charge:
     help: Create a New Charge
     http:
       port: 3000
@@ -89,6 +89,7 @@ actions:
         help: A string that identifies this transaction as part of a group
     output:   
       type: object
+      contentType: application/json
       properties:
         amount:
           help: The amount of charge created
@@ -111,7 +112,7 @@ actions:
         source:
           help: The source details
           type: object
-  getbalance:
+  get_balance:
     help: Get your stripe balance
     http:
       port: 3000
@@ -120,6 +121,7 @@ actions:
       contentType: application/json
     output: 
       type: object
+      contentType: application/json
       properties:
         available:
           help: The available balance details.
@@ -130,7 +132,7 @@ actions:
         pending:
           help: The pending balance details.
           type: object
-  createpaymentintent:
+  create_payment_intent:
     help: Create a new payment intent
     http:
       port: 3000
@@ -225,6 +227,7 @@ actions:
         help: A string that identifies this transaction as part of a group
     output:   
       type: object
+      contentType: application/json
       properties:
         amount:
           help: The amount of payment is created
@@ -244,7 +247,7 @@ actions:
         payment_method_types:
           help: The payment method type
           type: object
-  retrievepaymentintent:
+  retrieve_payment_intent:
     help: Retrieves the details of a PaymentIntent that has previously been created
     http:
       port: 3000
@@ -259,6 +262,7 @@ actions:
         help: The payment intent code
     output:   
       type: object
+      contentType: application/json
       properties:
         amount:
           help: The amount of payment is created
@@ -278,7 +282,7 @@ actions:
         payment_method_types:
           help: The payment method type
           type: object
-  updatepaymentintent:
+  update_payment_intent:
     help: Updates a PaymentIntent object
     http:
       port: 3000
@@ -343,6 +347,7 @@ actions:
         help: A string that identifies the resulting payment as part of a group. transfer_group may only be provided if it has not been set
     output:
       type: object
+      contentType: application/json
       properties:
         amount:
           type: int
@@ -368,8 +373,8 @@ actions:
         source:
           type: string
           help: The ID of the Source object to attach to this PaymentIntent
-  confirmpaymentintent:
-    help: Updates a PaymentIntent object
+  confirm_payment_intent:
+    help: Confirm a PaymentIntent object
     http:
       port: 3000
       method: post
@@ -383,8 +388,9 @@ actions:
         help: The payment intent code
     output:
       type: object
-  capturepaymentintent:
-    help: Updates a PaymentIntent object
+      contentType: application/json
+  capture_payment_intent:
+    help: Capture a PaymentIntent object
     http:
       port: 3000
       method: post
@@ -408,7 +414,8 @@ actions:
         help: The payment intent code
     output:
       type: object
-  cancelpaymentintent:
+      contentType: application/json
+  cancel_payment_intent:
     help: Cancel PaymentIntent object
     http:
       port: 3000
@@ -428,6 +435,7 @@ actions:
         help: Reason for canceling this PaymentIntent. If set, possible values are duplicate, fraudulent, requested_by_customer, or failed_invoice
     output:
       type: object
+      contentType: application/json
       properties:
         amount:
           help: 
@@ -447,7 +455,7 @@ actions:
         status:
           help: The status as "canceled"
           type: string
-  listallpaymentintent:
+  list_all_payment_intent:
     help: List all PaymentIntent object
     http:
       port: 3000
@@ -456,6 +464,7 @@ actions:
       contentType: application/json
     output:
       type: string
+      contentType: application/json
       properties:
         amount:
           help: The amount of payment is created
@@ -478,17 +487,17 @@ actions:
         status:
           help: The status of payment intent
           type: string
-  createsource:
+  create_source:
     help: Create source for stripe
     http:
       port: 3000
       method: post
-      path: /createsource
+      path: /createsource/{{transfer_type}}
       contentType: application/json
     arguments:
-      transfertype: 
+      transfer_type: 
         type: string
-        in: requestBody
+        in: path
         required: true
         help: The payment intent code
       currency:
@@ -518,6 +527,7 @@ actions:
         help: nformation about a mandate possibility attached to a source object (generally for bank debits) as well as its acceptance status
     output:
       type: object
+      contentType: application/json
       properties:
         id:
           help: The source ID
@@ -537,7 +547,7 @@ actions:
         receiver:
           help: The object of receiver object
           type: object
-  createcustomer:
+  create_customer:
     help: Create customer for stripe
     http:
       port: 3000
@@ -592,6 +602,7 @@ actions:
         help: The customer’s tax information. Appears on invoices emailed to this customer
     output:
       type: object
+      contentType: application/json
       properties:
         id:
           help: The customer ID

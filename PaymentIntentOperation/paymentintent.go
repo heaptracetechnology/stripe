@@ -2,11 +2,9 @@ package PaymentIntentOperation
 
 import (
 	"encoding/json"
-	"fmt"
 	"github.com/gorilla/mux"
 	"github.com/stripe/stripe-go"
 	"github.com/stripe/stripe-go/paymentintent"
-	"log"
 	"net/http"
 	"os"
 )
@@ -30,8 +28,7 @@ func CreatePaymentIntent(w http.ResponseWriter, r *http.Request) {
 	var param *stripe.PaymentIntentParams
 	err := decoder.Decode(&param)
 	if err != nil {
-		msgbytes, _ := json.Marshal(err)
-		writeJsonResponse(w, msgbytes)
+		WriteErrorResponse(w, err)
 		return
 	}
 
@@ -39,12 +36,15 @@ func CreatePaymentIntent(w http.ResponseWriter, r *http.Request) {
 
 	pi, err := paymentintent.New(param)
 	if err != nil {
-		msgbytes, _ := json.Marshal(err)
-		writeJsonResponse(w, msgbytes)
+		WriteErrorResponse(w, err)
 		return
 	}
-	bytes, _ := json.Marshal(pi)
-	writeJsonResponse(w, bytes)
+	bytes, err := json.Marshal(pi)
+	if err != nil {
+		WriteErrorResponse(w, err)
+		return
+	}
+	WriteJsonResponse(w, bytes, http.StatusCreated)
 }
 
 //Retrieve PaymentIntent
@@ -57,10 +57,15 @@ func RetrievePaymentIntent(w http.ResponseWriter, r *http.Request) {
 
 	pi, err := paymentintent.Get(id, nil)
 	if err != nil {
-		log.Fatalln(err)
+		WriteErrorResponse(w, err)
+		return
 	}
-	bytes, _ := json.Marshal(pi)
-	writeJsonResponse(w, bytes)
+	bytes, err := json.Marshal(pi)
+	if err != nil {
+		WriteErrorResponse(w, err)
+		return
+	}
+	WriteJsonResponse(w, bytes, http.StatusOK)
 }
 
 //Update PaymentIntent
@@ -72,21 +77,23 @@ func UpdatePaymentIntent(w http.ResponseWriter, r *http.Request) {
 
 	decoderpi := json.NewDecoder(r.Body)
 	var param *stripe.PaymentIntentParams
-	errr := decoderpi.Decode(&param)
-	if errr != nil {
-		msgbytes, _ := json.Marshal(errr)
-		writeJsonResponse(w, msgbytes)
+	err := decoderpi.Decode(&param)
+	if err != nil {
+		WriteErrorResponse(w, err)
 		return
 	}
 
 	o, err := paymentintent.Update(id, param)
 	if err != nil {
-		msgbytes, _ := json.Marshal(err)
-		writeJsonResponse(w, msgbytes)
+		WriteErrorResponse(w, err)
 		return
 	}
-	bytes, _ := json.Marshal(o)
-	writeJsonResponse(w, bytes)
+	bytes, err := json.Marshal(o)
+	if err != nil {
+		WriteErrorResponse(w, err)
+		return
+	}
+	WriteJsonResponse(w, bytes, http.StatusOK)
 }
 
 //Confirm PaymentIntent
@@ -99,12 +106,15 @@ func ConfirmPaymentIntent(w http.ResponseWriter, r *http.Request) {
 	}
 	intent, err := paymentintent.Confirm("pi_1E5Q7FJytX7n0OoXaCfqt9KD", params)
 	if err != nil {
-		msgbytes, _ := json.Marshal(err)
-		writeJsonResponse(w, msgbytes)
+		WriteErrorResponse(w, err)
 		return
 	}
-	bytes, _ := json.Marshal(intent)
-	writeJsonResponse(w, bytes)
+	bytes, err := json.Marshal(intent)
+	if err != nil {
+		WriteErrorResponse(w, err)
+		return
+	}
+	WriteJsonResponse(w, bytes, http.StatusOK)
 }
 
 //Capture PaymentIntent
@@ -115,21 +125,23 @@ func CapturePaymentIntent(w http.ResponseWriter, r *http.Request) {
 
 	decoderpi := json.NewDecoder(r.Body)
 	var param *stripe.PaymentIntentCaptureParams
-	errr := decoderpi.Decode(&param)
-	if errr != nil {
-		msgbytes, _ := json.Marshal(errr)
-		writeJsonResponse(w, msgbytes)
+	err := decoderpi.Decode(&param)
+	if err != nil {
+		WriteErrorResponse(w, err)
 		return
 	}
 
 	intent, err := paymentintent.Capture(id, param)
 	if err != nil {
-		msgbytes, _ := json.Marshal(err)
-		writeJsonResponse(w, msgbytes)
+		WriteErrorResponse(w, err)
 		return
 	}
-	bytes, _ := json.Marshal(intent)
-	writeJsonResponse(w, bytes)
+	bytes, err := json.Marshal(intent)
+	if err != nil {
+		WriteErrorResponse(w, err)
+		return
+	}
+	WriteJsonResponse(w, bytes, http.StatusOK)
 }
 
 //Cancel PaymentIntent
@@ -140,28 +152,44 @@ func CancelPaymentIntent(w http.ResponseWriter, r *http.Request) {
 
 	intent, err := paymentintent.Cancel(id, nil)
 	if err != nil {
-		log.Fatalln(err)
+		WriteErrorResponse(w, err)
+		return
 	}
-	bytes, _ := json.Marshal(intent)
-	writeJsonResponse(w, bytes)
+	bytes, err := json.Marshal(intent)
+	if err != nil {
+		WriteErrorResponse(w, err)
+		return
+	}
+	WriteJsonResponse(w, bytes, http.StatusOK)
 }
 
 //List All PaymentIntent
 func ListAllPaymentIntent(w http.ResponseWriter, r *http.Request) {
 	stripe.Key = os.Getenv("SECRET_KEY")
 
-	params := &stripe.PaymentIntentListParams{}
-	params.Filters.AddFilter("limit", "", "3")
-	i := paymentintent.List(params)
-	for i.Next() {
-		p := i.PaymentIntent()
-		fmt.Println(p)
-		bytes, _ := json.Marshal(p)
-		writeJsonResponse(w, bytes)
-	}
-}
+	params := stripe.PaymentIntentListParams{}
+	res := paymentintent.List(&params)
 
-func writeJsonResponse(w http.ResponseWriter, bytes []byte) {
+	var listpaymentintent []stripe.PaymentIntent
+
+	for res.Next() {
+		paymentintent := stripe.PaymentIntent{}
+		listpaymentintent = append(listpaymentintent, paymentintent)
+	}
+
+	bytes, err := json.Marshal(&listpaymentintent)
+	if err != nil {
+		WriteErrorResponse(w, err)
+	}
+	WriteJsonResponse(w, bytes, http.StatusOK)
+
+}
+func WriteErrorResponse(w http.ResponseWriter, err error) {
+	msgbytes, _ := json.Marshal(err)
+	WriteJsonResponse(w, msgbytes, http.StatusBadRequest)
+}
+func WriteJsonResponse(w http.ResponseWriter, bytes []byte, code int) {
+	w.WriteHeader(code)
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 	w.Write(bytes)
 }

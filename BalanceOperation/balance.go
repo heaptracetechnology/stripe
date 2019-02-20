@@ -20,6 +20,7 @@ func GetBalance(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	bytes, _ := json.Marshal(b)
+	w.WriteHeader(http.StatusOK)
 	writeJsonResponse(w, bytes)
 }
 

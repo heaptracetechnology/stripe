@@ -30,6 +30,7 @@ func CreateCharge(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	bytes, _ := json.Marshal(ch)
+	w.WriteHeader(http.StatusOK)
 	writeJsonResponse(w, bytes)
 }
 

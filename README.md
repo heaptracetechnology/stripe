@@ -23,39 +23,39 @@ omg build
 
 ##### Create Charge
 ```sh
-$ omg run createcharge -a amount=<AMOUNT> -a currency=<CURRENCY> -a description=<DESCRIPTION> -e SECRET_KEY=<SECRET_KEY>
+$ omg run create_charge -a amount=<AMOUNT> -a currency=<CURRENCY> -a description=<DESCRIPTION> -e SECRET_KEY=<SECRET_KEY>
 ```
 ##### Get Balance
 ```sh
-$ omg run getbalance -e SECRET_KEY=<SECRET_KEY>
+$ omg run get_balance -e SECRET_KEY=<SECRET_KEY>
 ```
 ##### Create Paymentintent
 ```sh
-$ omg run createpaymentintent -a amount=<AMOUNT> -a currency=<CURRENCY> -e SECRET_KEY=<SECRET_KEY>
+$ omg run create_payment_intent -a amount=<AMOUNT> -a currency=<CURRENCY> -e SECRET_KEY=<SECRET_KEY>
 ```
 ##### Retrive Paymentintent
 ```sh
-omg run retrievepaymentintent -a paymentintent_id=<PAYMENTINTENT_ID> -e SECRET_KEY=<SECRET_KEY>
+omg run retrieve_payment_intent -a paymentintent_id=<PAYMENTINTENT_ID> -e SECRET_KEY=<SECRET_KEY>
 ```
 ##### Update Paymentintent
 ```sh
-omg run updatepaymentintent -a amount=<AMOUNT> -a paymentintent_id=<PAYMENTINTENT_ID> -a shipping=<SHIPPING_OBJECT> -e SECRET_KEY=<SECRET_KEY>
+omg run update_payment_intent -a amount=<AMOUNT> -a paymentintent_id=<PAYMENTINTENT_ID> -a shipping=<SHIPPING_OBJECT> -e SECRET_KEY=<SECRET_KEY>
 ```
 ##### Cancel PaymentIntent
 ```sh
-omg run cancelpaymentintent -a paymentintent_id=<PAYMENTINTENT_ID> -e SECRET_KEY=<SECRET_KEY>
+omg run cancel_payment_intent -a paymentintent_id=<PAYMENTINTENT_ID> -e SECRET_KEY=<SECRET_KEY>
 ```
 ##### List PaymentIntent
 ```sh
-omg run listallpaymentintent -e SECRET_KEY=<SECRET_KEY>
+omg run list_all_payment_intent -e SECRET_KEY=<SECRET_KEY>
 ```
 ##### Create Source
 ```sh
-omg run createsource -a transfertype=<TRANSFER_TYPE> -a currency=<CURRENCY> -a owner=<OWNER_OBJECT> -e SECRET_KEY=<SECRET_KEY>
+omg run create_source -a transfertype=<TRANSFER_TYPE> -a currency=<CURRENCY> -a owner=<OWNER_OBJECT> -e SECRET_KEY=<SECRET_KEY>
 ```
 ##### Create Customer
 ```sh
-omg run createcustomer -a description=<DESCRIPTION> -a email=<CUSTOMER_EMAIL> -e SECRET_KEY=<SECRET_KEY>
+omg run create_customer -a description=<DESCRIPTION> -a email=<CUSTOMER_EMAIL> -e SECRET_KEY=<SECRET_KEY>
 ```
 ## License
 ### [MIT](https://choosealicense.com/licenses/mit/)

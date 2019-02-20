@@ -78,7 +78,7 @@ var routes = Routes{
     Route{
         "CreateSource",
         "POST",
-        "/createsource",
+        "/createsource/{transfer_type}",
         SourceOperation.CreateSource,
     },
     Route{
