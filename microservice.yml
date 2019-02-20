@@ -35,13 +35,58 @@ actions:
       description: 
         type: string
         in: requestBody
-        required: true
+        required: false
         help: The description for charge
-      # set_source:
-      #   type: object
-      #   in: requestBody
-      #   required: true
-      #   help: The source for charge
+      application_fee_amount:
+        type: int
+        in: requestBody
+        required: false
+        help: A fee in cents that will be applied to the charge and transferred to the application owner’s Stripe account
+      capture:
+        type: boolean
+        in: requestBody
+        required: false
+        help: Whether to immediately capture the charge
+      customer:
+        type: string
+        in: requestBody
+        required: false
+        help: The ID of an existing customer that will be charged in this request.
+      metadata:
+        type: object
+        in: requestBody
+        required: false
+        help: Set of key-value pairs that you can attach to an object
+      on_behalf_of:
+        type: string
+        in: requestBody
+        required: false
+        help: The Stripe account ID for which these funds are intended. Automatically set if you use the destination parameter
+      receipt_email:
+        type: string
+        in: requestBody
+        required: false
+        help: The email address to which this charge’s receipt will be sent
+      shipping:
+        type: object
+        in: requestBody
+        required: false
+        help: Shipping information for the charge. Helps prevent fraud on charges for physical goods.
+      source:
+        type: string
+        in: requestBody
+        required: false
+        help: A payment source to be charged
+      transfer_data:
+        type: string
+        in: requestBody
+        required: false
+        help: An optional dictionary including the account to automatically transfer to as part of a destination charge (required destination feild)
+      transfer_group:
+        type: string
+        in: requestBody
+        required: false
+        help: A string that identifies this transaction as part of a group
     output:   
       type: object
       properties:
@@ -108,6 +153,76 @@ actions:
         in: requestBody
         required: false
         help: The type of payment method
+      description: 
+        type: string
+        in: requestBody
+        required: false
+        help: The description for paymentintent
+      application_fee_amount:
+        type: int
+        in: requestBody
+        required: false
+        help: A fee in cents that will be applied to the paymentintent and transferred to the application owner’s Stripe account
+      capture_method:
+        type: string
+        in: requestBody
+        required: false
+        help: Capture method of this PaymentIntent, one of automatic or manual
+      confirm:
+        type: boolean
+        in: requestBody
+        required: false
+        help: Attempt to confirm this PaymentIntent immediately
+      customer:
+        type: string
+        in: requestBody
+        required: false
+        help: ID of the customer this PaymentIntent is for if one exists.
+      metadata:
+        type: object
+        in: requestBody
+        required: false
+        help: Set of key-value pairs that you can attach to an object
+      on_behalf_of:
+        type: string
+        in: requestBody
+        required: false
+        help: The Stripe account ID for which these funds are intended. Automatically set if you use the destination parameter
+      receipt_email:
+        type: string
+        in: requestBody
+        required: false
+        help: The email address to which this charge’s receipt will be sent
+      return_url: 
+        type: string
+        in: requestBody
+        required: false
+        help: The URL to redirect your customer back to after they authenticate or cancel their payment on the payment method’s app or site
+      save_payment_method:
+        type: boolean
+        in: requestBody
+        required: false
+        help: Set to true to save this PaymentIntent’s payment method to the associated Customer, if the payment method is not already attached
+      shipping:
+        type: object
+        in: requestBody
+        required: false
+        help: Shipping information for the PaymentIntent. Helps prevent fraud on charges for physical goods.
+      source:
+        type: string
+        in: requestBody
+        required: false
+        help: A payment source to be PaymentIntent
+      transfer_data:
+        type: string
+        in: requestBody
+        required: false
+        help: The parameters used to automatically create a Transfer when the payment succeeds
+      transfer_group:
+        type: string
+        in: requestBody
+        required: false
+        help: A string that identifies this transaction as part of a group
     output:   
       type: object
       properties:
@@ -144,6 +259,25 @@ actions:
         help: The payment intent code
     output:   
       type: object
+      properties:
+        amount:
+          help: The amount of payment is created
+          type: int
+        charges:
+          help: The object of charges with total count, url and data
+          type: object
+        client_secret:
+          help: The client payment secret key 
+          type: string
+        currency:
+          help: The type of currency
+          type: string
+        last_payment_error:
+          help: The error message from last payment
+          type : string
+        payment_method_types:
+          help: The payment method type
+          type: object
   updatepaymentintent:
     help: Updates a PaymentIntent object
     http:
@@ -287,6 +421,11 @@ actions:
         in: path
         required: true
         help: The payment intent code
+      cancellation_reason:
+        type: string
+        in: requestBody
+        required: false
+        help: Reason for canceling this PaymentIntent. If set, possible values are duplicate, fraudulent, requested_by_customer, or failed_invoice
     output:
       type: object
       properties:
@@ -362,8 +501,42 @@ actions:
         in: requestBody
         required: false
         help: The payment intent code
+      amount:
+        type: int
+        in: requestBody
+        required: false
+        help: Amount associated with the source. This is the amount for which the source will be chargeable once ready
+      flow:
+        type: string
+        in: requestBody
+        required: false
+        help: The authentication flow of the source to create. flow is one of redirect, receiver, code_verification, none. It is generally inferred unless a type supports multiple flows
+      mandate:
+        type: object
+        in: requestBody
+        required: false
+        help: nformation about a mandate possibility attached to a source object (generally for bank debits) as well as its acceptance status
     output:
       type: object
+      properties:
+      id:
+        help: The source ID
+        type: string
+      object:
+        help: The type of object
+        type: string
+      ach_credit_transfer:
+        help: The type of transfer
+        type: object
+      amount:
+        help: The amount of source
+        type: int
+      client_secret:
+        help: The source ID 
+        type: string
+      receiver:
+        help: The object of receiver object
+        type: object
   createcustomer:
     help: Create customer for stripe
     http:
@@ -382,8 +555,68 @@ actions:
         in: requestBody
         required: false
         help: The customer email address
+      account_balance:
+        type: int
+        in: requestBody
+        required: false
+        help: The customer account balance
+      description:
+        type: string
+        in: requestBody
+        required: false
+        help: The description in create customer
+      invoice_prefix:
+        type: string
+        in: requestBody
+        required: false
+        help: The prefix for the customer used to generate unique invoice numbers. Must be 3–12 uppercase letters or numbers
+      invoice_settings:
+        type: object
+        in: requestBody
+        required: false
+        help: Default invoice settings for this customer
+      metadata:
+        type: object
+        in: requestBody
+        required: false
+        help: A set of key-value pairs that you can attach to a customer object. It can be useful for storing additional information about the customer in a structured format
+      shipping:
+        type: object
+        in: requestBody
+        required: false
+        help: The customer’s shipping information. Appears on invoices emailed to this customer
+      tax_info:
+        type: object
+        in: requestBody
+        required: false
+        help: The customer’s tax information. Appears on invoices emailed to this customer
     output:
       type: object
+      properties:
+        id:
+          help: The customer ID
+          type: string
+        object:
+          help: The create object for customer
+          type: string
+        account_balance:
+          help: The amount of balance
+          type: int
+        currency:
+          help: The type of currency
+          type: string
+        description:
+          help: The description for created customer 
+          type: string
+        invoice_settings:
+          help: The setting of invoice for customer
+          type: object
+        livemode:
+          help: The mode of customer
+          type: boolean
+        subscriptions:
+          help: The subscriptions object details
+          type: object
 environment:
   SECRET_KEY:
     type: string
