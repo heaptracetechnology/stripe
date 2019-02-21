@@ -73,7 +73,7 @@ actions:
         required: false
         help: Shipping information for the charge. Helps prevent fraud on charges for physical goods.
       source:
-        type: string
+        type: object
         in: requestBody
         required: false
         help: A payment source to be charged
@@ -251,7 +251,7 @@ actions:
     help: Retrieves the details of a PaymentIntent that has previously been created
     http:
       port: 3000
-      method: put
+      method: get
       path: /retrievepaymentIntent/{{paymentintent_id}}
       contentType: application/json
     arguments:
@@ -628,6 +628,124 @@ actions:
         subscriptions:
           help: The subscriptions object details
           type: object
+  create_card:
+    help: Create card for customer.
+    http:
+      port: 3000
+      method: post
+      path: /createcard
+      contentType: application/json
+    arguments:
+      source:
+        type: object
+        in: requestBody
+        required: true
+        help: The object of card details, requird feilds are object(type of payment source. Should be card),number(card number), exp_month, exp_year
+      customer:
+        type: string
+        in: requestBody
+        required: true
+        help: The created crad will assoscite with customer ID
+      token:
+        type: string
+        in: requestBody
+        required: true
+        help: The type of token eg- "tok_visa"
+      metadata:
+        type: object
+        in: requestBody
+        required: false
+        help: A set of key-value pairs that you can attach to a card object
+    output:
+      type: object
+      contentType: application/json
+      properties:
+        id:
+          help: The card ID
+          type: string
+        object:
+          help: The object type 
+          type: string
+        customer:
+          help: The customer ID
+          type: string
+        metadata:
+          help: The card metadata object
+          type: object
+  create_token:
+    help: Create token for card.
+    http:
+      port: 3000
+      method: post
+      path: /createtoken
+      contentType: application/json
+    arguments:
+      card:
+        type: object
+        in: requestBody
+        required: true
+        help: The object of card details, requird feilds are object(type of payment source. Should be card),number(card number), exp_month, exp_year
+      customer:
+        type: string
+        in: requestBody
+        required: true
+        help: The token for card will assoscite with customer ID
+    output:
+      type: object
+      contentType: application/json
+      properties:
+        id:
+          help: The token ID
+          type: string
+  create_refund:
+    help: Create refund for charge.
+    http:
+      port: 3000
+      method: post
+      path: /createrefund
+      contentType: application/json
+    arguments:
+      charge:
+        type: string
+        in: requestBody
+        required: true
+        help: The identifier of the charge to refund
+      amount:
+        type: int
+        in: requestBody
+        required: false
+        help: positive integer in cents representing how much of this charge to refund
+      metadata:
+        type: object
+        in: requestBody
+        required: false
+        help: A set of key-value pairs that you can attach to a Refund object
+      refund_application_fee:
+        type: boolean
+        in: requestBody
+        required: false
+        help: Boolean indicating whether the application fee should be refunded when refunding this charge
+      reverse_transfer:
+        type: boolean
+        in: requestBody
+        required: false
+        help: Boolean indicating whether the transfer should be reversed when refunding this charge
+    output:
+      type: object
+      contentType: application/json
+      properties:
+        id:
+          help: The refund ID
+          type: string
+        object: 
+          help: The type of object
+          type: string
+        charge:
+          help: The refunded charge ID
+          type: string
+        status:
+          help: The refund status 
+          type: string 
 environment:
   SECRET_KEY:
     type: string

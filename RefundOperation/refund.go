@@ -1,33 +1,31 @@
-package CustomerOperation
+package RefundOperation
 
 import (
 	"encoding/json"
 	"github.com/stripe/stripe-go"
-	"github.com/stripe/stripe-go/customer"
+	"github.com/stripe/stripe-go/refund"
 	"net/http"
 	"os"
 )
 
-//Create Cusytomer
-func CreateCustomer(w http.ResponseWriter, r *http.Request) {
+//CreateToken
+func CreateRefund(w http.ResponseWriter, r *http.Request) {
 	stripe.Key = os.Getenv("SECRET_KEY")
 
 	decoder := json.NewDecoder(r.Body)
-	var param *stripe.CustomerParams
+	var param *stripe.RefundParams
 	err := decoder.Decode(&param)
 	if err != nil {
 		WriteErrorResponse(w, err)
 		return
 	}
 
-	param.SetSource("tok_amex")
-
-	cus, err := customer.New(param)
+	refunded, err := refund.New(param)
 	if err != nil {
 		WriteErrorResponse(w, err)
 		return
 	}
-	bytes, _ := json.Marshal(cus)
+	bytes, _ := json.Marshal(refunded)
 	WriteJsonResponse(w, bytes, http.StatusCreated)
 }
 

@@ -3,10 +3,13 @@ package route
 import (
     "github.com/gorilla/mux"
     "github.com/user/stripe/BalanceOperation"
+    "github.com/user/stripe/CardOperation"
     "github.com/user/stripe/ChargeOperation"
     "github.com/user/stripe/CustomerOperation"
     "github.com/user/stripe/PaymentIntentOperation"
+    "github.com/user/stripe/RefundOperation"
     "github.com/user/stripe/SourceOperation"
+    "github.com/user/stripe/TokenOperation"
     "log"
     "net/http"
 )
@@ -41,7 +44,7 @@ var routes = Routes{
     },
     Route{
         "RetrievePaymentIntent",
-        "PUT",
+        "GET",
         "/retrievepaymentIntent/{paymentintent_id}",
         PaymentIntentOperation.RetrievePaymentIntent,
     },
@@ -86,6 +89,24 @@ var routes = Routes{
         "POST",
         "/createcustomer",
         CustomerOperation.CreateCustomer,
+    },
+    Route{
+        "CreateCard",
+        "POST",
+        "/createcard",
+        CardOperation.CreateCard,
+    },
+    Route{
+        "CreateToken",
+        "POST",
+        "/createtoken",
+        TokenOperation.CreateToken,
+    },
+    Route{
+        "CreateRefund",
+        "POST",
+        "/createrefund",
+        RefundOperation.CreateRefund,
     },
 }
 

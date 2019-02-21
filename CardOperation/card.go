@@ -1,33 +1,35 @@
-package CustomerOperation
+package CardOperation
 
 import (
 	"encoding/json"
 	"github.com/stripe/stripe-go"
-	"github.com/stripe/stripe-go/customer"
+	"github.com/stripe/stripe-go/card"
 	"net/http"
 	"os"
 )
 
-//Create Cusytomer
-func CreateCustomer(w http.ResponseWriter, r *http.Request) {
+func CreateCard(w http.ResponseWriter, r *http.Request) {
 	stripe.Key = os.Getenv("SECRET_KEY")
 
 	decoder := json.NewDecoder(r.Body)
-	var param *stripe.CustomerParams
+	var param *stripe.CardParams
 	err := decoder.Decode(&param)
 	if err != nil {
 		WriteErrorResponse(w, err)
 		return
 	}
+	// params := &stripe.CardParams{
+	// 	Customer: stripe.String("cus_EZIlZdLKhLaUfB"),
+	// 	Token:    stripe.String("tok_visa"),
+	// }
 
-	param.SetSource("tok_amex")
-
-	cus, err := customer.New(param)
+	//Token:    stripe.String("tok_visa"),
+	card, err := card.New(param)
 	if err != nil {
 		WriteErrorResponse(w, err)
 		return
 	}
-	bytes, _ := json.Marshal(cus)
+	bytes, _ := json.Marshal(card)
 	WriteJsonResponse(w, bytes, http.StatusCreated)
 }
 

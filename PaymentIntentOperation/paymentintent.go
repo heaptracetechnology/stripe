@@ -2,6 +2,7 @@ package PaymentIntentOperation
 
 import (
 	"encoding/json"
+	"fmt"
 	"github.com/gorilla/mux"
 	"github.com/stripe/stripe-go"
 	"github.com/stripe/stripe-go/paymentintent"
@@ -52,7 +53,9 @@ func RetrievePaymentIntent(w http.ResponseWriter, r *http.Request) {
 
 	stripe.Key = os.Getenv("SECRET_KEY")
 
+	fmt.Println("r.URL ::: ", r.URL)
 	vars := mux.Vars(r)
+	fmt.Println("vars ::: ", vars)
 	var id = vars["paymentintent_id"]
 
 	pi, err := paymentintent.Get(id, nil)
