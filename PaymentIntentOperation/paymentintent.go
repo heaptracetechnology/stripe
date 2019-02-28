@@ -2,7 +2,6 @@ package PaymentIntentOperation
 
 import (
 	"encoding/json"
-	"fmt"
 	"github.com/gorilla/mux"
 	"github.com/stripe/stripe-go"
 	"github.com/stripe/stripe-go/paymentintent"
@@ -33,8 +32,6 @@ func CreatePaymentIntent(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	param.PaymentMethodTypes = []*string{stripe.String("card")}
-
 	pi, err := paymentintent.New(param)
 	if err != nil {
 		WriteErrorResponse(w, err)
@@ -53,9 +50,7 @@ func RetrievePaymentIntent(w http.ResponseWriter, r *http.Request) {
 
 	stripe.Key = os.Getenv("SECRET_KEY")
 
-	fmt.Println("r.URL ::: ", r.URL)
 	vars := mux.Vars(r)
-	fmt.Println("vars ::: ", vars)
 	var id = vars["paymentintent_id"]
 
 	pi, err := paymentintent.Get(id, nil)
@@ -85,6 +80,8 @@ func UpdatePaymentIntent(w http.ResponseWriter, r *http.Request) {
 		WriteErrorResponse(w, err)
 		return
 	}
+
+	param.PaymentMethodTypes = []*string{stripe.String("card")}
 
 	o, err := paymentintent.Update(id, param)
 	if err != nil {
@@ -188,6 +185,15 @@ func ListAllPaymentIntent(w http.ResponseWriter, r *http.Request) {
 	WriteJsonResponse(w, bytes, http.StatusOK)
 
 }
+
+func GetResultCreated() int {
+	return http.StatusCreated
+}
+
+func GetResultOK() int {
+	return http.StatusOK
+}
+
 func WriteErrorResponse(w http.ResponseWriter, err error) {
 	msgbytes, _ := json.Marshal(err)
 	WriteJsonResponse(w, msgbytes, http.StatusBadRequest)

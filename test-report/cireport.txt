@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <testsuite name="Charge Operations" tests="2" failures="0" errors="0" time="1.497">
+      <testcase name="Capture Charge operations capture charge CaptureCharge Should result http.StatusOK" classname="Charge Operations" time="1.226284513"></testcase>
+      <testcase name="Create Card operations create charge CreateCharge Should result http.StatusCreated" classname="Charge Operations" time="0.270159276"></testcase>
+  </testsuite>

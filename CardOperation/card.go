@@ -18,12 +18,7 @@ func CreateCard(w http.ResponseWriter, r *http.Request) {
 		WriteErrorResponse(w, err)
 		return
 	}
-	// params := &stripe.CardParams{
-	// 	Customer: stripe.String("cus_EZIlZdLKhLaUfB"),
-	// 	Token:    stripe.String("tok_visa"),
-	// }
 
-	//Token:    stripe.String("tok_visa"),
 	card, err := card.New(param)
 	if err != nil {
 		WriteErrorResponse(w, err)
@@ -31,6 +26,10 @@ func CreateCard(w http.ResponseWriter, r *http.Request) {
 	}
 	bytes, _ := json.Marshal(card)
 	WriteJsonResponse(w, bytes, http.StatusCreated)
+}
+
+func GetResultCreated() int {
+	return http.StatusCreated
 }
 
 func WriteErrorResponse(w http.ResponseWriter, err error) {

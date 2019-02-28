@@ -108,6 +108,12 @@ var routes = Routes{
         "/createrefund",
         RefundOperation.CreateRefund,
     },
+    Route{
+        "CaptureCharge",
+        "POST",
+        "/capturecharge/{charge}",
+        ChargeOperation.CaptureCharge,
+    },
 }
 
 func NewRouter() *mux.Router {

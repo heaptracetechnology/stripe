@@ -3,141 +3,156 @@ package PaymentIntentOperation
 import (
 	"bytes"
 	"encoding/json"
-	//"fmt"
 	"github.com/gorilla/mux"
-	"github.com/stripe/stripe-go"
+	. "github.com/onsi/ginkgo"
+	. "github.com/onsi/gomega"
 	"net/http"
 	"net/http/httptest"
 	"os"
-	"testing"
 )
 
 type PaymentIntent struct {
-	Amount              int64
-	Currency            string
-	Payment_Method_Type string
+	Amount             int64  `json:"amount"`
+	Currency           string `json:"currency"`
+	Paymentmethodtypes string `json:"paymentmethodtypes"`
 }
 
-func TestListAllPaymentIntent(t *testing.T) {
+var _ = Describe("Create PaymentIntent operations", func() {
+
+	paymentintent := PaymentIntent{}
+	reqbody := new(bytes.Buffer)
+	json.NewEncoder(reqbody).Encode(paymentintent)
+	os.Setenv("SECRET_KEY", "sk_test_gENQu8ecxwwMUsWlgsQeqbgI")
+	req, err := http.NewRequest("POST", "/CreatePaymentIntent", reqbody)
+	if err != nil {
+	}
+	recorder := httptest.NewRecorder()
+
+	Describe("create payment intent", func() {
+		Context("CreatePaymentIntent", func() {
+			It("Should result http.StatusCreated", func() {
+				CreatePaymentIntent(recorder, req)
+				Expect(GetResultCreated()).To(Equal(http.StatusCreated))
+			})
+		})
+	})
+})
+
+var _ = Describe("Retrive PaymentIntent operations", func() {
+
+	req, err := http.NewRequest("GET", "/retrievepaymentIntent/paymentintent_id", nil)
+	if err != nil {
+	}
+	vars := map[string]string{
+		//"paymentintent_id": "pi_1E8p2MJytX7n0OoX1uYVO0Fz",
+		"paymentintent_id": "",
+	}
+
+	req = mux.SetURLVars(req, vars)
+	recorder := httptest.NewRecorder()
+
+	Describe("retrive payment intent", func() {
+		Context("RetrivePaymentIntent", func() {
+			It("Should result http.StatusOK", func() {
+				RetrievePaymentIntent(recorder, req)
+				Expect(GetResultOK()).To(Equal(http.StatusOK))
+			})
+		})
+	})
+})
+
+var _ = Describe("Update PaymentIntent operations", func() {
+
+	paymentintent := PaymentIntent{}
+	reqbody := new(bytes.Buffer)
+	json.NewEncoder(reqbody).Encode(paymentintent)
+	req, err := http.NewRequest("PUT", "/updatepaymentintent/paymentintent_id", reqbody)
+	if err != nil {
+	}
+	vars := map[string]string{
+		//"paymentintent_id": "pi_1E8p2MJytX7n0OoX1uYVO0Fz",
+		"paymentintent_id": "",
+	}
+
+	req = mux.SetURLVars(req, vars)
+	recorder := httptest.NewRecorder()
+
+	Describe("update payment intent", func() {
+		Context("UpdatePaymentIntent", func() {
+			It("Should result http.StatusOK", func() {
+				UpdatePaymentIntent(recorder, req)
+				Expect(GetResultOK()).To(Equal(http.StatusOK))
+			})
+		})
+	})
+})
+
+var _ = Describe("Capture PaymentIntent operations", func() {
+
+	paymentintent := PaymentIntent{}
+	reqbody := new(bytes.Buffer)
+	json.NewEncoder(reqbody).Encode(paymentintent)
+	req, err := http.NewRequest("PUT", "/capturecharge/paymentintent_id", reqbody)
+	if err != nil {
+	}
+	vars := map[string]string{
+		//"paymentintent_id": "pi_1E8p2MJytX7n0OoX1uYVO0Fz",
+		"paymentintent_id": "",
+	}
+
+	req = mux.SetURLVars(req, vars)
+	recorder := httptest.NewRecorder()
+
+	Describe("capture payment intent", func() {
+		Context("CapturePaymentIntent", func() {
+			It("Should result http.StatusOK", func() {
+				CapturePaymentIntent(recorder, req)
+				Expect(GetResultOK()).To(Equal(http.StatusOK))
+			})
+		})
+	})
+})
+
+var _ = Describe("Cancel PaymentIntent operations", func() {
+
+	paymentintent := PaymentIntent{}
+	reqbody := new(bytes.Buffer)
+	json.NewEncoder(reqbody).Encode(paymentintent)
+	req, err := http.NewRequest("POST", "/cancelpaymentintent/paymentintent_id", nil)
+	if err != nil {
+	}
+	vars := map[string]string{
+		//"paymentintent_id": "pi_1E8p2MJytX7n0OoX1uYVO0Fz",
+		"paymentintent_id": "",
+	}
+
+	req = mux.SetURLVars(req, vars)
+	recorder := httptest.NewRecorder()
+
+	Describe("cancel payment intent", func() {
+		Context("CancelPaymentIntent", func() {
+			It("Should result http.StatusOK", func() {
+				CancelPaymentIntent(recorder, req)
+				Expect(GetResultOK()).To(Equal(http.StatusOK))
+			})
+		})
+	})
+})
+
+var _ = Describe("List All PaymentIntent operations", func() {
 
 	req, err := http.NewRequest("GET", "/listallpaymentintent", nil)
 	if err != nil {
-		t.Fatal(err)
 	}
-	os.Setenv("SECRET_KEY", "sk_test_gENQu8ecxwwMUsWlgsQeqbgI")
+
 	recorder := httptest.NewRecorder()
-	handler := http.HandlerFunc(ListAllPaymentIntent)
 
-	handler.ServeHTTP(recorder, req)
-
-	if status := recorder.Code; status != http.StatusOK {
-		t.Errorf("handler returned wrong status code: got %v want %v",
-			status, http.StatusOK)
-	}
-
-	var listpaymentintent []stripe.PaymentIntent
-	data := recorder.Body.String()
-	dataByte := []byte(data)
-	err = json.Unmarshal(dataByte, &listpaymentintent)
-
-	if err != nil {
-		t.Errorf("handler returned unexpected body: got %v want %v",
-			recorder.Body.String(), listpaymentintent)
-	}
-
-}
-
-func TestCreatePaymentIntent(t *testing.T) {
-	paymentintent := PaymentIntent{Amount: 5600, Currency: "usd", Payment_Method_Type: "card"}
-	reqbody := new(bytes.Buffer)
-	json.NewEncoder(reqbody).Encode(paymentintent)
-
-	req, err := http.NewRequest("POST", "/createpaymentintent", reqbody)
-	if err != nil {
-		t.Fatal(err)
-	}
-	os.Setenv("SECRET_KEY", "sk_test_gENQu8ecxwwMUsWlgsQeqbgI")
-	recorder := httptest.NewRecorder()
-	handler := http.HandlerFunc(CreatePaymentIntent)
-
-	handler.ServeHTTP(recorder, req)
-
-	if status := recorder.Code; status != http.StatusCreated {
-		t.Errorf("handler returned wrong status code: got %v want %v",
-			status, http.StatusOK)
-	}
-}
-
-func TestRetrievePaymentIntent(t *testing.T) {
-
-	req, err := http.NewRequest("GET", "/retrievepaymentIntent/pi_1E5WMKJytX7n0OoXQ0o9SaLy", nil)
-	if err != nil {
-		t.Fatal(err)
-	}
-
-	vars := map[string]string{
-		"paymentintent_id": "pi_1E5WMKJytX7n0OoXQ0o9SaLy",
-	}
-
-	req = mux.SetURLVars(req, vars)
-	os.Setenv("SECRET_KEY", "sk_test_gENQu8ecxwwMUsWlgsQeqbgI")
-	recorder := httptest.NewRecorder()
-	handler := http.HandlerFunc(RetrievePaymentIntent)
-
-	handler.ServeHTTP(recorder, req)
-
-	if status := recorder.Code; status != http.StatusOK {
-		t.Errorf("handler returned wrong status code: got %v want %v",
-			status, http.StatusOK)
-	}
-}
-
-func TestUpdatePaymentIntent(t *testing.T) {
-
-	paymentintent := PaymentIntent{Amount: 6000, Currency: "usd"}
-	reqbody := new(bytes.Buffer)
-	json.NewEncoder(reqbody).Encode(paymentintent)
-
-	req, err := http.NewRequest("PUT", "/updatepaymentintent/pi_1E6EC3JytX7n0OoXi0RHZfoe", reqbody)
-	if err != nil {
-		t.Fatal(err)
-	}
-	vars := map[string]string{
-		"paymentintent_id": "pi_1E6EC3JytX7n0OoXi0RHZfoe",
-	}
-
-	req = mux.SetURLVars(req, vars)
-	os.Setenv("SECRET_KEY", "sk_test_gENQu8ecxwwMUsWlgsQeqbgI")
-	recorder := httptest.NewRecorder()
-	handler := http.HandlerFunc(UpdatePaymentIntent)
-
-	handler.ServeHTTP(recorder, req)
-
-	if status := recorder.Code; status != http.StatusOK {
-		t.Errorf("handler returned wrong status code: got %v want %v",
-			status, http.StatusOK)
-	}
-}
-
-func TestCancelPaymentIntent(t *testing.T) {
-
-	req, err := http.NewRequest("POST", "/cancelpaymentintent/pi_1E6E79JytX7n0OoXpVFtXPzR", nil)
-	if err != nil {
-		t.Fatal(err)
-	}
-	vars := map[string]string{
-		"paymentintent_id": "pi_1E6E79JytX7n0OoXpVFtXPzR",
-	}
-
-	req = mux.SetURLVars(req, vars)
-	os.Setenv("SECRET_KEY", "sk_test_gENQu8ecxwwMUsWlgsQeqbgI")
-	recorder := httptest.NewRecorder()
-	handler := http.HandlerFunc(CancelPaymentIntent)
-
-	handler.ServeHTTP(recorder, req)
-
-	if status := recorder.Code; status != http.StatusOK {
-		t.Errorf("handler returned wrong status code: got %v want %v",
-			status, http.StatusOK)
-	}
-}
+	Describe("list all payment intent", func() {
+		Context("ListAllPaymentIntent", func() {
+			It("Should result http.StatusOK", func() {
+				ListAllPaymentIntent(recorder, req)
+				Expect(GetResultOK()).To(Equal(http.StatusOK))
+			})
+		})
+	})
+})

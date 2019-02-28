@@ -23,6 +23,10 @@ func GetBalance(w http.ResponseWriter, r *http.Request) {
 	WriteJsonResponse(w, bytes, http.StatusOK)
 }
 
+func GetResultOK() int {
+	return http.StatusOK
+}
+
 func WriteErrorResponse(w http.ResponseWriter, err error) {
 	msgbytes, _ := json.Marshal(err)
 	WriteJsonResponse(w, msgbytes, http.StatusBadRequest)

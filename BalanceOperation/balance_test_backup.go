@@ -1,4 +1,4 @@
-package ChargeOperation
+package BalanceOperation
 
 import (
 	"net/http"
@@ -7,15 +7,15 @@ import (
 	"testing"
 )
 
-func TestCreateCharge(t *testing.T) {
+func TestGetBalance(t *testing.T) {
 
-	req, err := http.NewRequest("POST", "/createcharge", nil)
+	req, err := http.NewRequest("GET", "/getbalance", nil)
 	if err != nil {
 		t.Fatal(err)
 	}
 	os.Setenv("SECRET_KEY", "sk_test_gENQu8ecxwwMUsWlgsQeqbgI")
 	recorder := httptest.NewRecorder()
-	handler := http.HandlerFunc()
+	handler := http.HandlerFunc(GetBalance)
 
 	handler.ServeHTTP(recorder, req)
 
@@ -23,5 +23,4 @@ func TestCreateCharge(t *testing.T) {
 		t.Errorf("handler returned wrong status code: got %v want %v",
 			status, http.StatusOK)
 	}
-
 }
