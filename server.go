@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/user/stripe/route"
+	"github.com/heaptracetechnology/stripe/route"
 	"log"
 	"net/http"
 )

@@ -63,9 +63,13 @@ $ omg run create_customer -a description=<DESCRIPTION> -a email=<CUSTOMER_EMAIL>
 ```
 ##### Create Card
 ```sh
-$ omg run create_customer -a description=<DESCRIPTION> -a email=<CUSTOMER_EMAIL> -e SECRET_KEY=<SECRET_KEY>
 $ omg run create_card -a source=<SOURCE_DETAILS> -a customer=<CUSTOMER_ID> -a metadata=<METADATA> -a token=<CARD_TOKEN>  -e SECRET_KEY=<SECRET_KEY>
 ```
+##### Create Refund
+```sh
+$ omg run create_refund -a charge=<CHARGE_ID> -e SECRET_KEY=<SECRET_KEY>
+```
+
 ## License
 ### [MIT](https://choosealicense.com/licenses/mit/)
 

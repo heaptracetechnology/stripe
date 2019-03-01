@@ -8,7 +8,7 @@ import (
 	"os"
 )
 
-//CreateToken
+//Create Refund
 func CreateRefund(w http.ResponseWriter, r *http.Request) {
 	stripe.Key = os.Getenv("SECRET_KEY")
 
@@ -28,7 +28,9 @@ func CreateRefund(w http.ResponseWriter, r *http.Request) {
 	bytes, _ := json.Marshal(refunded)
 	WriteJsonResponse(w, bytes, http.StatusCreated)
 }
-
+func GetResultCreated() int {
+	return http.StatusCreated
+}
 func WriteErrorResponse(w http.ResponseWriter, err error) {
 	msgbytes, _ := json.Marshal(err)
 	WriteJsonResponse(w, msgbytes, http.StatusBadRequest)
