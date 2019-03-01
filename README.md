@@ -3,6 +3,7 @@ An OMG service for Stripe, it allows individuals and businesses to receive payme
 
 [![Open Microservice Guide](https://img.shields.io/badge/OMG-enabled-brightgreen.svg?style=for-the-badge)](https://microservice.guide)
 ![Build Status](https://travis-ci.com/heaptracetechnology/microservice-stripe.svg?branch=master)
+[![codecov](https://codecov.io/gh/heaptracetechnology/microservice-stripe/branch/master/graph/badge.svg)](https://codecov.io/gh/heaptracetechnology/microservice-stripe)
 
 ## [OMG](hhttps://microservice.guide) CLI
 
