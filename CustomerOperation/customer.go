@@ -31,6 +31,10 @@ func CreateCustomer(w http.ResponseWriter, r *http.Request) {
 	WriteJsonResponse(w, bytes, http.StatusCreated)
 }
 
+func GetResultCreated() int {
+	return http.StatusCreated
+}
+
 func WriteErrorResponse(w http.ResponseWriter, err error) {
 	msgbytes, _ := json.Marshal(err)
 	WriteJsonResponse(w, msgbytes, http.StatusBadRequest)

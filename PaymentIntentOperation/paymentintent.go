@@ -51,7 +51,7 @@ func RetrievePaymentIntent(w http.ResponseWriter, r *http.Request) {
 	stripe.Key = os.Getenv("SECRET_KEY")
 
 	vars := mux.Vars(r)
-	var id = vars["paymentintent_id"]
+	var id = vars["paymentintentid"]
 
 	pi, err := paymentintent.Get(id, nil)
 	if err != nil {
@@ -71,7 +71,7 @@ func UpdatePaymentIntent(w http.ResponseWriter, r *http.Request) {
 	stripe.Key = os.Getenv("SECRET_KEY")
 
 	vars := mux.Vars(r)
-	var id = vars["paymentintent_id"]
+	var id = vars["paymentintentid"]
 
 	decoderpi := json.NewDecoder(r.Body)
 	var param *stripe.PaymentIntentParams
@@ -121,7 +121,7 @@ func ConfirmPaymentIntent(w http.ResponseWriter, r *http.Request) {
 func CapturePaymentIntent(w http.ResponseWriter, r *http.Request) {
 	stripe.Key = os.Getenv("SECRET_KEY")
 	vars := mux.Vars(r)
-	var id = vars["paymentintent_id"]
+	var id = vars["paymentintentid"]
 
 	decoderpi := json.NewDecoder(r.Body)
 	var param *stripe.PaymentIntentCaptureParams
@@ -148,7 +148,7 @@ func CapturePaymentIntent(w http.ResponseWriter, r *http.Request) {
 func CancelPaymentIntent(w http.ResponseWriter, r *http.Request) {
 	stripe.Key = os.Getenv("SECRET_KEY")
 	vars := mux.Vars(r)
-	var id = vars["paymentintent_id"]
+	var id = vars["paymentintentid"]
 
 	intent, err := paymentintent.Cancel(id, nil)
 	if err != nil {

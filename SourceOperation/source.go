@@ -2,10 +2,9 @@ package SourceOperation
 
 import (
 	"encoding/json"
-	"github.com/stripe/stripe-go"
-	//"github.com/stripe/stripe-go/paymentsource"
 	"fmt"
 	"github.com/gorilla/mux"
+	"github.com/stripe/stripe-go"
 	"github.com/stripe/stripe-go/source"
 	"net/http"
 	"os"
@@ -22,14 +21,12 @@ func CreateSource(w http.ResponseWriter, r *http.Request) {
 	decoder := json.NewDecoder(r.Body)
 	var param *stripe.SourceObjectParams
 	err := decoder.Decode(&param)
-	fmt.Println("param : ", param)
 	if err != nil {
 		WriteErrorResponse(w, err)
 		return
 	}
 
 	param.Type = stripe.String(tranftype)
-
 	s, errr := source.New(param)
 	if errr != nil {
 		WriteErrorResponse(w, err)

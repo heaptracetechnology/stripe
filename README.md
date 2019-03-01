@@ -23,7 +23,11 @@ omg build
 
 ##### Create Charge
 ```sh
-$ omg run create_charge -a amount=<AMOUNT> -a currency=<CURRENCY> -a description=<DESCRIPTION> -e SECRET_KEY=<SECRET_KEY>
+$ omg run create_charge -a amount=<AMOUNT> -a currency=<CURRENCY> -a description=<DESCRIPTION> -a capture=<TRUE/FALSE>  -e SECRET_KEY=<SECRET_KEY>
+```
+##### Capture Charge
+```sh
+$ omg run capture_charge -a charge=<CHARGE_ID> -e SECRET_KEY=<SECRET_KEY>
 ```
 ##### Get Balance
 ```sh
@@ -31,31 +35,36 @@ $ omg run get_balance -e SECRET_KEY=<SECRET_KEY>
 ```
 ##### Create Paymentintent
 ```sh
-$ omg run create_payment_intent -a amount=<AMOUNT> -a currency=<CURRENCY> -e SECRET_KEY=<SECRET_KEY>
+$ omg run create_payment_intent -a amount=<AMOUNT> -a currency=<CURRENCY> -a customer=<CUSTOMER_ID> -a savepaymentmethod=<TRUE/FALSE> -a capturemethod=<AUTOMATIC/MANUAL> -a paymentmethodtypes=<METHOD_LIST> -e SECRET_KEY=<SECRET_KEY>
 ```
 ##### Retrive Paymentintent
 ```sh
-omg run retrieve_payment_intent -a paymentintent_id=<PAYMENTINTENT_ID> -e SECRET_KEY=<SECRET_KEY>
+$ omg run retrieve_payment_intent -a paymentintentid=<PAYMENTINTENT_ID> -e SECRET_KEY=<SECRET_KEY>
 ```
 ##### Update Paymentintent
 ```sh
-omg run update_payment_intent -a amount=<AMOUNT> -a paymentintent_id=<PAYMENTINTENT_ID> -a shipping=<SHIPPING_OBJECT> -e SECRET_KEY=<SECRET_KEY>
+$ omg run update_payment_intent -a amount=<AMOUNT> -a paymentintentid=<PAYMENTINTENT_ID> -a shipping=<SHIPPING_OBJECT> -e SECRET_KEY=<SECRET_KEY>
+```
+##### Capture Paymentintent
+```sh
+$ omg run capture_payment_intent -a paymentintentid=<PAYMENTINTENT_ID> -a amounttocapture=<AMOUNT_TO_CAPTURE> -e SECRET_KEY=sk_test_gENQu8ecxwwMUsWlgsQeqbgI
 ```
 ##### Cancel PaymentIntent
 ```sh
-omg run cancel_payment_intent -a paymentintent_id=<PAYMENTINTENT_ID> -e SECRET_KEY=<SECRET_KEY>
+$ omg run cancel_payment_intent -a paymentintentid=<PAYMENTINTENT_ID> -e SECRET_KEY=<SECRET_KEY>
 ```
 ##### List PaymentIntent
 ```sh
 omg run list_all_payment_intent -e SECRET_KEY=<SECRET_KEY>
 ```
-##### Create Source
-```sh
-omg run create_source -a transfertype=<TRANSFER_TYPE> -a currency=<CURRENCY> -a owner=<OWNER_OBJECT> -e SECRET_KEY=<SECRET_KEY>
-```
 ##### Create Customer
 ```sh
-omg run create_customer -a description=<DESCRIPTION> -a email=<CUSTOMER_EMAIL> -e SECRET_KEY=<SECRET_KEY>
+$ omg run create_customer -a description=<DESCRIPTION> -a email=<CUSTOMER_EMAIL> -e SECRET_KEY=<SECRET_KEY>
+```
+##### Create Card
+```sh
+$ omg run create_customer -a description=<DESCRIPTION> -a email=<CUSTOMER_EMAIL> -e SECRET_KEY=<SECRET_KEY>
+$ omg run create_card -a source=<SOURCE_DETAILS> -a customer=<CUSTOMER_ID> -a metadata=<METADATA> -a token=<CARD_TOKEN>  -e SECRET_KEY=<SECRET_KEY>
 ```
 ## License
 ### [MIT](https://choosealicense.com/licenses/mit/)

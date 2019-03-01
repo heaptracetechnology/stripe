@@ -315,7 +315,7 @@ actions:
     http:
       port: 3000
       method: get
-      path: /retrievepaymentIntent/{{paymentintentid}}
+      path: /retrievepaymentintent/{{paymentintentid}}
       contentType: application/json
     arguments:
       paymentintentid: 
@@ -555,10 +555,10 @@ actions:
     http:
       port: 3000
       method: post
-      path: /createsource/{{transfer_type}}
+      path: /createsource/{{transfertype}}
       contentType: application/json
     arguments:
-      transfer_type: 
+      transfertype: 
         type: string
         in: path
         required: true

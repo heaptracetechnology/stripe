@@ -45,13 +45,13 @@ var routes = Routes{
     Route{
         "RetrievePaymentIntent",
         "GET",
-        "/retrievepaymentIntent/{paymentintent_id}",
+        "/retrievepaymentintent/{paymentintentid}",
         PaymentIntentOperation.RetrievePaymentIntent,
     },
     Route{
         "UpdatePaymentIntent",
         "PUT",
-        "/updatepaymentintent/{paymentintent_id}",
+        "/updatepaymentintent/{paymentintentid}",
         PaymentIntentOperation.UpdatePaymentIntent,
     },
     Route{
@@ -63,13 +63,13 @@ var routes = Routes{
     Route{
         "CapturePaymentIntent",
         "POST",
-        "/capturepaymentintent/{paymentintent_id}",
+        "/capturepaymentintent/{paymentintentid}",
         PaymentIntentOperation.CapturePaymentIntent,
     },
     Route{
         "CancelPaymentIntent",
         "POST",
-        "/cancelpaymentintent/{paymentintent_id}",
+        "/cancelpaymentintent/{paymentintentid}",
         PaymentIntentOperation.CancelPaymentIntent,
     },
     Route{
@@ -81,7 +81,7 @@ var routes = Routes{
     Route{
         "CreateSource",
         "POST",
-        "/createsource/{transfer_type}",
+        "/createsource/{transfertype}",
         SourceOperation.CreateSource,
     },
     Route{
