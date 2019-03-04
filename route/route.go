@@ -55,12 +55,6 @@ var routes = Routes{
         PaymentIntentOperation.UpdatePaymentIntent,
     },
     Route{
-        "ConfirmPaymentIntent",
-        "POST",
-        "/confirmpaymentintent",
-        PaymentIntentOperation.ConfirmPaymentIntent,
-    },
-    Route{
         "CapturePaymentIntent",
         "POST",
         "/capturepaymentintent/{paymentintentid}",

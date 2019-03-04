@@ -2,6 +2,7 @@ package TokenOperation
 
 import (
 	"encoding/json"
+	"github.com/heaptracetechnology/microservice-stripe/result"
 	"github.com/stripe/stripe-go"
 	"github.com/stripe/stripe-go/token"
 	"net/http"
@@ -16,26 +17,13 @@ func CreateToken(w http.ResponseWriter, r *http.Request) {
 	var param *stripe.TokenParams
 	err := decoder.Decode(&param)
 	if err != nil {
-		WriteErrorResponse(w, err)
-		return
+		result.WriteErrorResponse(w, err)
 	}
 
 	token, err := token.New(param)
 	if err != nil {
-		WriteErrorResponse(w, err)
-		return
+		result.WriteErrorResponse(w, err)
 	}
 	bytes, _ := json.Marshal(token)
-	WriteJsonResponse(w, bytes, http.StatusCreated)
-}
-
-func WriteErrorResponse(w http.ResponseWriter, err error) {
-	msgbytes, _ := json.Marshal(err)
-	WriteJsonResponse(w, msgbytes, http.StatusBadRequest)
-}
-
-func WriteJsonResponse(w http.ResponseWriter, bytes []byte, code int) {
-	w.WriteHeader(code)
-	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-	w.Write(bytes)
+	result.WriteJsonResponse(w, bytes, http.StatusCreated)
 }

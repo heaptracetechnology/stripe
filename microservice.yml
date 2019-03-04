@@ -436,22 +436,6 @@ actions:
         source:
           type: string
           help: The ID of the Source object to attach to this PaymentIntent
-  confirm_payment_intent:
-    help: Confirm a PaymentIntent object
-    http:
-      port: 3000
-      method: post
-      path: /confirmpaymentintent
-      contentType: application/json
-    arguments:
-      paymentintentid: 
-        type: string
-        in: requestBody
-        required: true
-        help: The payment intent code
-    output:
-      type: object
-      contentType: application/json
   capture_payment_intent:
     help: Capture a PaymentIntent object
     http:
