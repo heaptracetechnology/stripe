@@ -1,7 +1,7 @@
 omg: 1
 lifecycle:
   startup:
-    command: ["stripe"]
+    command: ["microservice-stripe"]
 info:
   version: 1.0.0
   title: Stripe 
