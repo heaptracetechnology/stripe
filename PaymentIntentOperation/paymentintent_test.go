@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"github.com/gorilla/mux"
+	"github.com/heaptracetechnology/microservice-stripe/result"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 	"net/http"
@@ -32,7 +33,7 @@ var _ = Describe("Create PaymentIntent operations", func() {
 		Context("CreatePaymentIntent", func() {
 			It("Should result http.StatusCreated", func() {
 				CreatePaymentIntent(recorder, req)
-				Expect(GetResultCreated()).To(Equal(http.StatusCreated))
+				Expect(result.GetResultCreated()).To(Equal(http.StatusCreated))
 			})
 		})
 	})
@@ -55,7 +56,7 @@ var _ = Describe("Retrive PaymentIntent operations", func() {
 		Context("RetrivePaymentIntent", func() {
 			It("Should result http.StatusOK", func() {
 				RetrievePaymentIntent(recorder, req)
-				Expect(GetResultOK()).To(Equal(http.StatusOK))
+				Expect(result.GetResultOK()).To(Equal(http.StatusOK))
 			})
 		})
 	})
@@ -81,7 +82,7 @@ var _ = Describe("Update PaymentIntent operations", func() {
 		Context("UpdatePaymentIntent", func() {
 			It("Should result http.StatusOK", func() {
 				UpdatePaymentIntent(recorder, req)
-				Expect(GetResultOK()).To(Equal(http.StatusOK))
+				Expect(result.GetResultOK()).To(Equal(http.StatusOK))
 			})
 		})
 	})
@@ -107,7 +108,7 @@ var _ = Describe("Capture PaymentIntent operations", func() {
 		Context("CapturePaymentIntent", func() {
 			It("Should result http.StatusOK", func() {
 				CapturePaymentIntent(recorder, req)
-				Expect(GetResultOK()).To(Equal(http.StatusOK))
+				Expect(result.GetResultOK()).To(Equal(http.StatusOK))
 			})
 		})
 	})
@@ -133,7 +134,7 @@ var _ = Describe("Cancel PaymentIntent operations", func() {
 		Context("CancelPaymentIntent", func() {
 			It("Should result http.StatusOK", func() {
 				CancelPaymentIntent(recorder, req)
-				Expect(GetResultOK()).To(Equal(http.StatusOK))
+				Expect(result.GetResultOK()).To(Equal(http.StatusOK))
 			})
 		})
 	})
@@ -151,7 +152,7 @@ var _ = Describe("List All PaymentIntent operations", func() {
 		Context("ListAllPaymentIntent", func() {
 			It("Should result http.StatusOK", func() {
 				ListAllPaymentIntent(recorder, req)
-				Expect(GetResultOK()).To(Equal(http.StatusOK))
+				Expect(result.GetResultOK()).To(Equal(http.StatusOK))
 			})
 		})
 	})

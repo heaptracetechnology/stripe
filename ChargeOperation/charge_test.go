@@ -3,6 +3,7 @@ package ChargeOperation
 import (
 	"bytes"
 	"encoding/json"
+	"github.com/heaptracetechnology/microservice-stripe/result"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 	"net/http"
@@ -30,7 +31,7 @@ var _ = Describe("Create Card operations", func() {
 		Context("CreateCharge", func() {
 			It("Should result http.StatusCreated", func() {
 				CreateCharge(recorder, req)
-				Expect(GetResultCreated()).To(Equal(http.StatusCreated))
+				Expect(result.GetResultCreated()).To(Equal(http.StatusCreated))
 			})
 		})
 	})
@@ -51,7 +52,7 @@ var _ = Describe("Capture Charge operations", func() {
 		Context("CaptureCharge", func() {
 			It("Should result http.StatusOK", func() {
 				CaptureCharge(recorder, req)
-				Expect(GetResultOK()).To(Equal(http.StatusOK))
+				Expect(result.GetResultOK()).To(Equal(http.StatusOK))
 			})
 		})
 	})

@@ -3,6 +3,7 @@ package RefundOperation
 import (
 	"bytes"
 	"encoding/json"
+	"github.com/heaptracetechnology/microservice-stripe/result"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 	"net/http"
@@ -28,7 +29,7 @@ var _ = Describe("Create Refund operations", func() {
 		Context("CreateRefund", func() {
 			It("Should result http.StatusCreated", func() {
 				CreateRefund(recorder, req)
-				Expect(GetResultCreated()).To(Equal(http.StatusCreated))
+				Expect(result.GetResultCreated()).To(Equal(http.StatusCreated))
 			})
 		})
 	})

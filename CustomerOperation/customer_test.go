@@ -3,6 +3,7 @@ package CustomerOperation
 import (
 	"bytes"
 	"encoding/json"
+	"github.com/heaptracetechnology/microservice-stripe/result"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 	"net/http"
@@ -29,7 +30,7 @@ var _ = Describe("Create Customer operations", func() {
 		Context("CreateCustomer", func() {
 			It("Should result http.StatusCreated", func() {
 				CreateCustomer(recorder, req)
-				Expect(GetResultCreated()).To(Equal(http.StatusCreated))
+				Expect(result.GetResultCreated()).To(Equal(http.StatusCreated))
 			})
 		})
 	})

@@ -1,6 +1,7 @@
 package BalanceOperation
 
 import (
+	"github.com/heaptracetechnology/microservice-stripe/result"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 	"net/http"
@@ -18,7 +19,7 @@ var _ = Describe("Get Balance operations", func() {
 		Context("GetBalance", func() {
 			It("Should result http.StatusCreated", func() {
 				GetBalance(recorder, req)
-				Expect(GetResultOK()).To(Equal(http.StatusOK))
+				Expect(result.GetResultOK()).To(Equal(http.StatusOK))
 			})
 		})
 	})

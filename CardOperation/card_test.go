@@ -3,6 +3,7 @@ package CardOperation
 import (
 	"bytes"
 	"encoding/json"
+	"github.com/heaptracetechnology/microservice-stripe/result"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 	"net/http"
@@ -30,7 +31,7 @@ var _ = Describe("Create Card operations", func() {
 		Context("CreateCard", func() {
 			It("Should result http.StatusCreated", func() {
 				CreateCard(recorder, req)
-				Expect(GetResultCreated()).To(Equal(http.StatusCreated))
+				Expect(result.GetResultCreated()).To(Equal(http.StatusCreated))
 			})
 		})
 	})
