@@ -30,18 +30,15 @@ func CreatePaymentIntent(w http.ResponseWriter, r *http.Request) {
 	err := decoder.Decode(&param)
 	if err != nil {
 		result.WriteErrorResponse(w, err)
-		return
 	}
 
 	pi, err := paymentintent.New(param)
 	if err != nil {
 		result.WriteErrorResponse(w, err)
-		return
 	}
 	bytes, err := json.Marshal(pi)
 	if err != nil {
 		result.WriteErrorResponse(w, err)
-		return
 	}
 	result.WriteJsonResponse(w, bytes, http.StatusCreated)
 }
@@ -57,12 +54,10 @@ func RetrievePaymentIntent(w http.ResponseWriter, r *http.Request) {
 	pi, err := paymentintent.Get(id, nil)
 	if err != nil {
 		result.WriteErrorResponse(w, err)
-		return
 	}
 	bytes, err := json.Marshal(pi)
 	if err != nil {
 		result.WriteErrorResponse(w, err)
-		return
 	}
 	result.WriteJsonResponse(w, bytes, http.StatusOK)
 }
@@ -79,18 +74,15 @@ func UpdatePaymentIntent(w http.ResponseWriter, r *http.Request) {
 	err := decoderpi.Decode(&param)
 	if err != nil {
 		result.WriteErrorResponse(w, err)
-		return
 	}
 
 	o, err := paymentintent.Update(id, param)
 	if err != nil {
 		result.WriteErrorResponse(w, err)
-		return
 	}
 	bytes, err := json.Marshal(o)
 	if err != nil {
 		result.WriteErrorResponse(w, err)
-		return
 	}
 	result.WriteJsonResponse(w, bytes, http.StatusOK)
 }
@@ -106,18 +98,15 @@ func CapturePaymentIntent(w http.ResponseWriter, r *http.Request) {
 	err := decoderpi.Decode(&param)
 	if err != nil {
 		result.WriteErrorResponse(w, err)
-		return
 	}
 
 	intent, err := paymentintent.Capture(id, param)
 	if err != nil {
 		result.WriteErrorResponse(w, err)
-		return
 	}
 	bytes, err := json.Marshal(intent)
 	if err != nil {
 		result.WriteErrorResponse(w, err)
-		return
 	}
 	result.WriteJsonResponse(w, bytes, http.StatusOK)
 }
@@ -131,12 +120,10 @@ func CancelPaymentIntent(w http.ResponseWriter, r *http.Request) {
 	intent, err := paymentintent.Cancel(id, nil)
 	if err != nil {
 		result.WriteErrorResponse(w, err)
-		return
 	}
 	bytes, err := json.Marshal(intent)
 	if err != nil {
 		result.WriteErrorResponse(w, err)
-		return
 	}
 	result.WriteJsonResponse(w, bytes, http.StatusOK)
 }
@@ -158,7 +145,6 @@ func ListAllPaymentIntent(w http.ResponseWriter, r *http.Request) {
 	bytes, err := json.Marshal(&listpaymentintent)
 	if err != nil {
 		result.WriteErrorResponse(w, err)
-		return
 	}
 	result.WriteJsonResponse(w, bytes, http.StatusOK)
 
