@@ -17,9 +17,6 @@ func CreateCharge(w http.ResponseWriter, r *http.Request) {
 	decoder := json.NewDecoder(r.Body)
 	var param *stripe.ChargeParams
 	err := decoder.Decode(&param)
-	if err != nil {
-		result.WriteErrorResponse(w, err)
-	}
 
 	param.SetSource("tok_visa")
 
@@ -41,12 +38,9 @@ func CaptureCharge(w http.ResponseWriter, r *http.Request) {
 	decoder := json.NewDecoder(r.Body)
 	var param *stripe.CaptureParams
 	err := decoder.Decode(&param)
-	if err != nil {
-		result.WriteErrorResponse(w, err)
-	}
 
-	ch, errr := charge.Capture(charge_id, param)
-	if errr != nil {
+	ch, err := charge.Capture(charge_id, param)
+	if err != nil {
 		result.WriteErrorResponse(w, err)
 	}
 	bytes, _ := json.Marshal(ch)

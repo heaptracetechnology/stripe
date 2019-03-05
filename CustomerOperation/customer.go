@@ -16,9 +16,6 @@ func CreateCustomer(w http.ResponseWriter, r *http.Request) {
 	decoder := json.NewDecoder(r.Body)
 	var param *stripe.CustomerParams
 	err := decoder.Decode(&param)
-	if err != nil {
-		result.WriteErrorResponse(w, err)
-	}
 
 	param.SetSource("tok_amex")
 

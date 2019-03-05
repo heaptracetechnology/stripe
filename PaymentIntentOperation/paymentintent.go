@@ -28,14 +28,9 @@ func CreatePaymentIntent(w http.ResponseWriter, r *http.Request) {
 	decoder := json.NewDecoder(r.Body)
 	var param *stripe.PaymentIntentParams
 	err := decoder.Decode(&param)
-	if err != nil {
-		result.WriteErrorResponse(w, err)
-	}
 
 	pi, err := paymentintent.New(param)
-	if err != nil {
-		result.WriteErrorResponse(w, err)
-	}
+
 	bytes, err := json.Marshal(pi)
 	if err != nil {
 		result.WriteErrorResponse(w, err)
@@ -52,9 +47,7 @@ func RetrievePaymentIntent(w http.ResponseWriter, r *http.Request) {
 	var id = vars["paymentintentid"]
 
 	pi, err := paymentintent.Get(id, nil)
-	if err != nil {
-		result.WriteErrorResponse(w, err)
-	}
+
 	bytes, err := json.Marshal(pi)
 	if err != nil {
 		result.WriteErrorResponse(w, err)
@@ -72,14 +65,9 @@ func UpdatePaymentIntent(w http.ResponseWriter, r *http.Request) {
 	decoderpi := json.NewDecoder(r.Body)
 	var param *stripe.PaymentIntentParams
 	err := decoderpi.Decode(&param)
-	if err != nil {
-		result.WriteErrorResponse(w, err)
-	}
 
 	o, err := paymentintent.Update(id, param)
-	if err != nil {
-		result.WriteErrorResponse(w, err)
-	}
+
 	bytes, err := json.Marshal(o)
 	if err != nil {
 		result.WriteErrorResponse(w, err)
@@ -96,14 +84,9 @@ func CapturePaymentIntent(w http.ResponseWriter, r *http.Request) {
 	decoderpi := json.NewDecoder(r.Body)
 	var param *stripe.PaymentIntentCaptureParams
 	err := decoderpi.Decode(&param)
-	if err != nil {
-		result.WriteErrorResponse(w, err)
-	}
 
 	intent, err := paymentintent.Capture(id, param)
-	if err != nil {
-		result.WriteErrorResponse(w, err)
-	}
+
 	bytes, err := json.Marshal(intent)
 	if err != nil {
 		result.WriteErrorResponse(w, err)
@@ -118,9 +101,7 @@ func CancelPaymentIntent(w http.ResponseWriter, r *http.Request) {
 	var id = vars["paymentintentid"]
 
 	intent, err := paymentintent.Cancel(id, nil)
-	if err != nil {
-		result.WriteErrorResponse(w, err)
-	}
+
 	bytes, err := json.Marshal(intent)
 	if err != nil {
 		result.WriteErrorResponse(w, err)
@@ -147,5 +128,4 @@ func ListAllPaymentIntent(w http.ResponseWriter, r *http.Request) {
 		result.WriteErrorResponse(w, err)
 	}
 	result.WriteJsonResponse(w, bytes, http.StatusOK)
-
 }
