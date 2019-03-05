@@ -19,7 +19,8 @@ type PaymentIntent struct {
 
 var _ = Describe("Create PaymentIntent operations", func() {
 
-	paymentintent := PaymentIntent{Amount: 1000, Currency: "usd"}
+	pmt := []string{"card"}
+	paymentintent := PaymentIntent{Amount: 1000, Currency: "usd", Paymentmethodtypes: pmt}
 	reqbody := new(bytes.Buffer)
 	json.NewEncoder(reqbody).Encode(paymentintent)
 	os.Setenv("SECRET_KEY", "sk_test_gENQu8ecxwwMUsWlgsQeqbgI")
