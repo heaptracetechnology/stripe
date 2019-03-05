@@ -696,7 +696,7 @@ actions:
       token:
         type: string
         in: requestBody
-        required: true
+        required: false
         help: The type of token eg- "tok_visa"
       metadata:
         type: object

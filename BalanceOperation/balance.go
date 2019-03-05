@@ -13,7 +13,6 @@ import (
 func GetBalance(w http.ResponseWriter, r *http.Request) {
 
 	stripe.Key = os.Getenv("SECRET_KEY")
-
 	b, err := balance.Get(nil)
 	if err != nil {
 		result.WriteErrorResponse(w, err)

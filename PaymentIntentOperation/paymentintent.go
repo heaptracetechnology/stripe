@@ -82,8 +82,6 @@ func UpdatePaymentIntent(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	param.PaymentMethodTypes = []*string{stripe.String("card")}
-
 	o, err := paymentintent.Update(id, param)
 	if err != nil {
 		result.WriteErrorResponse(w, err)

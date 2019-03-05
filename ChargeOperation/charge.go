@@ -45,8 +45,8 @@ func CaptureCharge(w http.ResponseWriter, r *http.Request) {
 		result.WriteErrorResponse(w, err)
 	}
 
-	ch, err := charge.Capture(charge_id, param)
-	if err != nil {
+	ch, errr := charge.Capture(charge_id, param)
+	if errr != nil {
 		result.WriteErrorResponse(w, err)
 	}
 	bytes, _ := json.Marshal(ch)
