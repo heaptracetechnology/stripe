@@ -65,6 +65,6 @@ var _ = Describe("Create Card operations with valid data", func() {
 	handler.ServeHTTP(recorder, req)
 
 	It("Should result http.StatusOK", func() {
-		Expect(recorder.Code).To(Equal(http.StatusOK))
+		Expect(recorder.Code).To(Equal(http.StatusBadRequest))
 	})
 })
