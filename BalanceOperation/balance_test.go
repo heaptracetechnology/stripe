@@ -1,14 +1,15 @@
 package BalanceOperation
 
 import (
-	. "github.com/onsi/ginkgo"
-	. "github.com/onsi/gomega"
 	"net/http"
 	"net/http/httptest"
 	"os"
+
+	. "github.com/onsi/ginkgo"
+	. "github.com/onsi/gomega"
 )
 
-var _ = Describe("Get Balance operations", func() {
+var _ = Describe("Get Balance operations with valid data", func() {
 
 	os.Setenv("SECRET_KEY", "sk_test_gENQu8ecxwwMUsWlgsQeqbgI")
 	req, err := http.NewRequest("GET", "/getbalance", nil)
@@ -18,11 +19,23 @@ var _ = Describe("Get Balance operations", func() {
 	handler := http.HandlerFunc(GetBalance)
 	handler.ServeHTTP(recorder, req)
 
-	Describe("get balance", func() {
-		Context("GetBalance", func() {
-			It("Should result http.StatusOK", func() {
-				Expect(recorder.Code).To(Equal(http.StatusOK))
-			})
-		})
+	It("Should result http.StatusOK", func() {
+		Expect(recorder.Code).To(Equal(http.StatusOK))
+	})
+})
+
+var _ = Describe("Get Balance operations with invalid data", func() {
+
+	//Invalid SECRET_KEY
+	os.Setenv("SECRET_KEY", "sk_test_gENQu8ecxwwMUsWlgsQeqbgI11")
+	req, err := http.NewRequest("GET", "/getbalance", nil)
+	if err != nil {
+	}
+	recorder := httptest.NewRecorder()
+	handler := http.HandlerFunc(GetBalance)
+	handler.ServeHTTP(recorder, req)
+
+	It("Should result http.StatusBadRequest", func() {
+		Expect(recorder.Code).To(Equal(http.StatusBadRequest))
 	})
 })

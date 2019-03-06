@@ -3,12 +3,13 @@ package ChargeOperation
 import (
 	"bytes"
 	"encoding/json"
-	"github.com/gorilla/mux"
-	. "github.com/onsi/ginkgo"
-	. "github.com/onsi/gomega"
 	"net/http"
 	"net/http/httptest"
 	"os"
+
+	"github.com/gorilla/mux"
+	. "github.com/onsi/ginkgo"
+	. "github.com/onsi/gomega"
 )
 
 type Charge struct {

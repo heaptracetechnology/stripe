@@ -2,11 +2,12 @@ package CardOperation
 
 import (
 	"encoding/json"
+	"net/http"
+	"os"
+
 	"github.com/heaptracetechnology/microservice-stripe/result"
 	"github.com/stripe/stripe-go"
 	"github.com/stripe/stripe-go/card"
-	"net/http"
-	"os"
 )
 
 func CreateCard(w http.ResponseWriter, r *http.Request) {
@@ -17,11 +18,13 @@ func CreateCard(w http.ResponseWriter, r *http.Request) {
 	err := decoder.Decode(&param)
 	if err != nil {
 		result.WriteErrorResponse(w, err)
+		return
 	}
 
 	card, err := card.New(param)
 	if err != nil {
 		result.WriteErrorResponse(w, err)
+		return
 	}
 	bytes, _ := json.Marshal(card)
 	result.WriteJsonResponse(w, bytes, http.StatusCreated)

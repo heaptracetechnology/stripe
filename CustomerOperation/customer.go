@@ -2,11 +2,12 @@ package CustomerOperation
 
 import (
 	"encoding/json"
+	"net/http"
+	"os"
+
 	"github.com/heaptracetechnology/microservice-stripe/result"
 	"github.com/stripe/stripe-go"
 	"github.com/stripe/stripe-go/customer"
-	"net/http"
-	"os"
 )
 
 //Create Cusytomer
@@ -22,6 +23,7 @@ func CreateCustomer(w http.ResponseWriter, r *http.Request) {
 	cus, err := customer.New(param)
 	if err != nil {
 		result.WriteErrorResponse(w, err)
+		return
 	}
 	bytes, _ := json.Marshal(cus)
 	result.WriteJsonResponse(w, bytes, http.StatusCreated)

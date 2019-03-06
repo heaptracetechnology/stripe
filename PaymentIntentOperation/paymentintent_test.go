@@ -3,12 +3,13 @@ package PaymentIntentOperation
 import (
 	"bytes"
 	"encoding/json"
-	"github.com/gorilla/mux"
-	. "github.com/onsi/ginkgo"
-	. "github.com/onsi/gomega"
 	"net/http"
 	"net/http/httptest"
 	"os"
+
+	"github.com/gorilla/mux"
+	. "github.com/onsi/ginkgo"
+	. "github.com/onsi/gomega"
 )
 
 type PaymentIntent struct {
@@ -31,7 +32,6 @@ var _ = Describe("Create PaymentIntent operations", func() {
 	recorder := httptest.NewRecorder()
 	handler := http.HandlerFunc(CreatePaymentIntent)
 	handler.ServeHTTP(recorder, req)
-
 	Describe("create payment intent", func() {
 		Context("CreatePaymentIntent", func() {
 			It("Should result http.StatusCreated", func() {
@@ -71,24 +71,20 @@ var _ = Describe("Update PaymentIntent operations", func() {
 	paymentintent := PaymentIntent{Amount: 2000, Currency: "usd"}
 	reqbody := new(bytes.Buffer)
 	json.NewEncoder(reqbody).Encode(paymentintent)
-
 	req, err := http.NewRequest("PUT", "/updatepaymentintent/paymentintentid", reqbody)
 	if err != nil {
 	}
-
 	vars := map[string]string{
 		"paymentintentid": "pi_1EAHHeJytX7n0OoXQnPHro2u",
 	}
-
 	req = mux.SetURLVars(req, vars)
-
 	recorder := httptest.NewRecorder()
 	handler := http.HandlerFunc(UpdatePaymentIntent)
 	handler.ServeHTTP(recorder, req)
 	Describe("update payment intent", func() {
 		Context("UpdatePaymentIntent", func() {
 			It("Should result http.StatusOK", func() {
-				Expect(recorder.Code).To(Equal(http.StatusBadRequest))
+				Expect(recorder.Code).To(Equal(http.StatusOK))
 			})
 		})
 	})
@@ -114,7 +110,7 @@ var _ = Describe("Capture PaymentIntent operations", func() {
 	Describe("capture payment intent", func() {
 		Context("CapturePaymentIntent", func() {
 			It("Should result http.StatusOK", func() {
-				Expect(recorder.Code).To(Equal(http.StatusBadRequest))
+				Expect(recorder.Code).To(Equal(http.StatusOK))
 			})
 		})
 	})
@@ -140,7 +136,7 @@ var _ = Describe("Cancel PaymentIntent operations", func() {
 	Describe("cancel payment intent", func() {
 		Context("CancelPaymentIntent", func() {
 			It("Should result http.StatusOK", func() {
-				Expect(recorder.Code).To(Equal(http.StatusBadRequest))
+				Expect(recorder.Code).To(Equal(http.StatusOK))
 			})
 		})
 	})

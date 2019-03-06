@@ -2,11 +2,12 @@ package BalanceOperation
 
 import (
 	"encoding/json"
+	"net/http"
+	"os"
+
 	"github.com/heaptracetechnology/microservice-stripe/result"
 	"github.com/stripe/stripe-go"
 	"github.com/stripe/stripe-go/balance"
-	"net/http"
-	"os"
 )
 
 //GetBalance
@@ -16,6 +17,7 @@ func GetBalance(w http.ResponseWriter, r *http.Request) {
 	b, err := balance.Get(nil)
 	if err != nil {
 		result.WriteErrorResponse(w, err)
+		return
 	}
 	bytes, _ := json.Marshal(b)
 	w.WriteHeader(http.StatusOK)
