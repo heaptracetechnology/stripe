@@ -7,6 +7,7 @@ import (
 	"net/http/httptest"
 	"os"
 
+	"github.com/heaptracetechnology/microservice-stripe/result"
 	"github.com/stripe/stripe-go"
 
 	. "github.com/onsi/ginkgo"
@@ -27,6 +28,7 @@ var _ = Describe("Create Card operations with bad data", func() {
 
 	req, err := http.NewRequest("POST", "/createcard", reqbody)
 	if err != nil {
+		result.WriteErrorResponse(w, err)
 	}
 	recorder := httptest.NewRecorder()
 	handler := http.HandlerFunc(CreateCard)

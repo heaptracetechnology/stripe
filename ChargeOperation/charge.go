@@ -2,12 +2,13 @@ package ChargeOperation
 
 import (
 	"encoding/json"
+	"net/http"
+	"os"
+
 	"github.com/gorilla/mux"
 	"github.com/heaptracetechnology/microservice-stripe/result"
 	"github.com/stripe/stripe-go"
 	"github.com/stripe/stripe-go/charge"
-	"net/http"
-	"os"
 )
 
 //CreateCharge
@@ -17,8 +18,13 @@ func CreateCharge(w http.ResponseWriter, r *http.Request) {
 	decoder := json.NewDecoder(r.Body)
 	var param *stripe.ChargeParams
 	err := decoder.Decode(&param)
-
-	param.SetSource("tok_visa")
+	if err != nil {
+		result.WriteErrorResponse(w, err)
+	}
+	err := param.SetSource("tok_visa")
+	if err != nil {
+		result.WriteErrorResponse(w, err)
+	}
 
 	ch, err := charge.New(param)
 	if err != nil {
@@ -38,7 +44,9 @@ func CaptureCharge(w http.ResponseWriter, r *http.Request) {
 	decoder := json.NewDecoder(r.Body)
 	var param *stripe.CaptureParams
 	err := decoder.Decode(&param)
-
+	if err != nil {
+		result.WriteErrorResponse(w, err)
+	}
 	ch, err := charge.Capture(charge_id, param)
 	if err != nil {
 		result.WriteErrorResponse(w, err)

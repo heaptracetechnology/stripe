@@ -20,7 +20,6 @@ func GetResultOK() int {
 func WriteErrorResponse(w http.ResponseWriter, err error) {
 	msgbytes, _ := json.Marshal(err)
 	WriteJsonResponse(w, msgbytes, http.StatusBadRequest)
-	return
 }
 
 func WriteJsonResponse(w http.ResponseWriter, bytes []byte, code int) {

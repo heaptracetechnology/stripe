@@ -5,6 +5,7 @@ import (
 	"net/http/httptest"
 	"os"
 
+	"github.com/heaptracetechnology/microservice-stripe/result"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 )
@@ -14,6 +15,7 @@ var _ = Describe("Get Balance operations with valid data", func() {
 	os.Setenv("SECRET_KEY", "sk_test_gENQu8ecxwwMUsWlgsQeqbgI")
 	req, err := http.NewRequest("GET", "/getbalance", nil)
 	if err != nil {
+		result.WriteErrorResponse(w, err)
 	}
 	recorder := httptest.NewRecorder()
 	handler := http.HandlerFunc(GetBalance)
@@ -30,6 +32,7 @@ var _ = Describe("Get Balance operations with invalid data", func() {
 	os.Setenv("SECRET_KEY", "sk_test_gENQu8ecxwwMUsWlgsQeqbgI11")
 	req, err := http.NewRequest("GET", "/getbalance", nil)
 	if err != nil {
+		result.WriteErrorResponse(w, err)
 	}
 	recorder := httptest.NewRecorder()
 	handler := http.HandlerFunc(GetBalance)

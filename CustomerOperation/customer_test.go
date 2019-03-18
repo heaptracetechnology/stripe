@@ -7,6 +7,7 @@ import (
 	"net/http/httptest"
 	"os"
 
+	"github.com/heaptracetechnology/microservice-stripe/result"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 )
@@ -26,6 +27,7 @@ var _ = Describe("Create Customer operations", func() {
 
 	req, err := http.NewRequest("POST", "/createcustomer", reqbody)
 	if err != nil {
+		result.WriteErrorResponse(w, err)
 	}
 	recorder := httptest.NewRecorder()
 	handler := http.HandlerFunc(CreateCustomer)
@@ -50,6 +52,7 @@ var _ = Describe("Create Customer operations invalid data", func() {
 
 	req, err := http.NewRequest("POST", "/createcustomer", reqbody)
 	if err != nil {
+		result.WriteErrorResponse(w, err)
 	}
 	recorder := httptest.NewRecorder()
 	handler := http.HandlerFunc(CreateCustomer)

@@ -6,6 +6,7 @@ import (
 	"github.com/heaptracetechnology/microservice-stripe/result"
 	"github.com/stripe/stripe-go"
 	"github.com/stripe/stripe-go/paymentintent"
+	"fmt"
 	"net/http"
 	"os"
 )
@@ -122,7 +123,7 @@ func ListAllPaymentIntent(w http.ResponseWriter, r *http.Request) {
 		paymentintent := stripe.PaymentIntent{}
 		listpaymentintent = append(listpaymentintent, paymentintent)
 	}
-
+	fmt.Println("res :::",listpaymentintent)
 	bytes, err := json.Marshal(&listpaymentintent)
 	if err != nil {
 		result.WriteErrorResponse(w, err)
