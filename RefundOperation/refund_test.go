@@ -20,8 +20,10 @@ var _ = Describe("Create Refund operations", func() {
 
 	refund := Refund{ChargeId: "ch_1EAIJQJytX7n0OoXhSP6RTc9"}
 	reqbody := new(bytes.Buffer)
-	json.NewEncoder(reqbody).Encode(refund)
-
+	err := json.NewEncoder(reqbody).Encode(refund)
+	if err != nil {
+		result.WriteErrorResponse(nil, err)
+	}
 	os.Setenv("SECRET_KEY", "sk_test_gENQu8ecxwwMUsWlgsQeqbgI")
 	req, err := http.NewRequest("POST", "/createrefund", reqbody)
 	if err != nil {
