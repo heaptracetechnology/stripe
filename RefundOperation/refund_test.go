@@ -3,11 +3,13 @@ package RefundOperation
 import (
 	"bytes"
 	"encoding/json"
-	. "github.com/onsi/ginkgo"
-	. "github.com/onsi/gomega"
 	"net/http"
 	"net/http/httptest"
 	"os"
+
+	"github.com/heaptracetechnology/microservice-stripe/result"
+	. "github.com/onsi/ginkgo"
+	. "github.com/onsi/gomega"
 )
 
 type Refund struct {
@@ -23,6 +25,7 @@ var _ = Describe("Create Refund operations", func() {
 	os.Setenv("SECRET_KEY", "sk_test_gENQu8ecxwwMUsWlgsQeqbgI")
 	req, err := http.NewRequest("POST", "/createrefund", reqbody)
 	if err != nil {
+		result.WriteErrorResponse(nil, err)
 	}
 	recorder := httptest.NewRecorder()
 	handler := http.HandlerFunc(CreateRefund)
