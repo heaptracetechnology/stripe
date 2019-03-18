@@ -58,7 +58,7 @@ var _ = Describe("Capture Charge operations", func() {
 	if err != nil {
 	}
 	vars := map[string]string{
-		"charge": "ch_1EAJ64JytX7n0OoXxR6RL8HU",
+		"charge": "ch_1EFMyQJytX7n0OoXRlGgTDM9",
 	}
 
 	req = mux.SetURLVars(req, vars)
@@ -70,7 +70,7 @@ var _ = Describe("Capture Charge operations", func() {
 	Describe("capture charge", func() {
 		Context("CaptureCharge", func() {
 			It("Should result http.StatusOK", func() {
-				Expect(recorder.Code).To(Equal(http.StatusBadRequest))
+				Expect(recorder.Code).To(Equal(http.StatusOK))
 			})
 		})
 	})
