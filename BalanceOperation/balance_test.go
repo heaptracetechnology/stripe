@@ -15,7 +15,7 @@ var _ = Describe("Get Balance operations with valid data", func() {
 	os.Setenv("SECRET_KEY", "sk_test_gENQu8ecxwwMUsWlgsQeqbgI")
 	req, err := http.NewRequest("GET", "/getbalance", nil)
 	if err != nil {
-		result.WriteErrorResponse(w, err)
+		result.WriteErrorResponse(nil, err)
 	}
 	recorder := httptest.NewRecorder()
 	handler := http.HandlerFunc(GetBalance)
@@ -32,7 +32,7 @@ var _ = Describe("Get Balance operations with invalid data", func() {
 	os.Setenv("SECRET_KEY", "sk_test_gENQu8ecxwwMUsWlgsQeqbgI11")
 	req, err := http.NewRequest("GET", "/getbalance", nil)
 	if err != nil {
-		result.WriteErrorResponse(w, err)
+		result.WriteErrorResponse(nil, err)
 	}
 	recorder := httptest.NewRecorder()
 	handler := http.HandlerFunc(GetBalance)

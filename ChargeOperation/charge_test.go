@@ -27,12 +27,12 @@ var _ = Describe("Create charge operations", func() {
 	reqbody := new(bytes.Buffer)
 	err := json.NewEncoder(reqbody).Encode(charge)
 	if err != nil {
-		result.WriteErrorResponse(w, err)
+		result.WriteErrorResponse(nil, err)
 	}
 	os.Setenv("SECRET_KEY", "sk_test_gENQu8ecxwwMUsWlgsQeqbgI")
 	req, err := http.NewRequest("POST", "/createcharge", reqbody)
 	if err != nil {
-		result.WriteErrorResponse(w, err)
+		result.WriteErrorResponse(nil, err)
 	}
 	recorder := httptest.NewRecorder()
 	handler := http.HandlerFunc(CreateCharge)

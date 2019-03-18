@@ -18,11 +18,11 @@ func CreateCustomer(w http.ResponseWriter, r *http.Request) {
 	var param *stripe.CustomerParams
 	err := decoder.Decode(&param)
 	if err != nil {
-		result.WriteErrorResponse(w, err)
+		result.WriteErrorResponse(nil, err)
 	}
-	err := param.SetSource("tok_amex")
-	if err != nil {
-		result.WriteErrorResponse(w, err)
+	errr := param.SetSource("tok_amex")
+	if errr != nil {
+		result.WriteErrorResponse(nil, errr)
 	}
 
 	cus, err := customer.New(param)

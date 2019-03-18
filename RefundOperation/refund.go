@@ -2,11 +2,12 @@ package RefundOperation
 
 import (
 	"encoding/json"
+	"net/http"
+	"os"
+
 	"github.com/heaptracetechnology/microservice-stripe/result"
 	"github.com/stripe/stripe-go"
 	"github.com/stripe/stripe-go/refund"
-	"net/http"
-	"os"
 )
 
 //Create Refund
@@ -17,12 +18,12 @@ func CreateRefund(w http.ResponseWriter, r *http.Request) {
 	var param *stripe.RefundParams
 	err := decoder.Decode(&param)
 	if err != nil {
-		result.WriteErrorResponse(w, err)
+		result.WriteErrorResponse(nil, err)
 	}
 
 	refunded, err := refund.New(param)
 	if err != nil {
-		result.WriteErrorResponse(w, err)
+		result.WriteErrorResponse(nil, err)
 	}
 	bytes, _ := json.Marshal(refunded)
 	result.WriteJsonResponse(w, bytes, http.StatusCreated)

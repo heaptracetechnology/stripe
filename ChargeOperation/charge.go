@@ -19,16 +19,16 @@ func CreateCharge(w http.ResponseWriter, r *http.Request) {
 	var param *stripe.ChargeParams
 	err := decoder.Decode(&param)
 	if err != nil {
-		result.WriteErrorResponse(w, err)
+		result.WriteErrorResponse(nil, err)
 	}
-	err := param.SetSource("tok_visa")
-	if err != nil {
-		result.WriteErrorResponse(w, err)
+	errr := param.SetSource("tok_visa")
+	if errr != nil {
+		result.WriteErrorResponse(nil, errr)
 	}
 
 	ch, err := charge.New(param)
 	if err != nil {
-		result.WriteErrorResponse(w, err)
+		result.WriteErrorResponse(nil, err)
 	}
 	bytes, _ := json.Marshal(ch)
 	result.WriteJsonResponse(w, bytes, http.StatusCreated)
@@ -45,11 +45,11 @@ func CaptureCharge(w http.ResponseWriter, r *http.Request) {
 	var param *stripe.CaptureParams
 	err := decoder.Decode(&param)
 	if err != nil {
-		result.WriteErrorResponse(w, err)
+		result.WriteErrorResponse(nil, err)
 	}
 	ch, err := charge.Capture(charge_id, param)
 	if err != nil {
-		result.WriteErrorResponse(w, err)
+		result.WriteErrorResponse(nil, err)
 	}
 	bytes, _ := json.Marshal(ch)
 	result.WriteJsonResponse(w, bytes, http.StatusOK)

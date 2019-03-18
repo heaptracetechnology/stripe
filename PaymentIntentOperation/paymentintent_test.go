@@ -26,7 +26,7 @@ var _ = Describe("Create PaymentIntent operations", func() {
 	reqbody := new(bytes.Buffer)
 	err := json.NewEncoder(reqbody).Encode(paymentintent)
 	if err != nil {
-		result.WriteErrorResponse(w, err)
+		result.WriteErrorResponse(nil, err)
 	}
 	os.Setenv("SECRET_KEY", "sk_test_gENQu8ecxwwMUsWlgsQeqbgI")
 	req, err := http.NewRequest("POST", "/createpaymentintent", reqbody)
@@ -76,11 +76,11 @@ var _ = Describe("Update PaymentIntent operations", func() {
 	reqbody := new(bytes.Buffer)
 	err := json.NewEncoder(reqbody).Encode(paymentintent)
 	if err != nil {
-		result.WriteErrorResponse(w, err)
+		result.WriteErrorResponse(nil, err)
 	}
 	req, err := http.NewRequest("PUT", "/updatepaymentintent/paymentintentid", reqbody)
 	if err != nil {
-		result.WriteErrorResponse(w, err)
+		result.WriteErrorResponse(nil, err)
 	}
 	vars := map[string]string{
 		"paymentintentid": "pi_1EAHHeJytX7n0OoXQnPHro2u",
@@ -105,7 +105,7 @@ var _ = Describe("Capture PaymentIntent operations", func() {
 	reqbody := new(bytes.Buffer)
 	err := json.NewEncoder(reqbody).Encode(paymentintent)
 	if err != nil {
-		result.WriteErrorResponse(w, err)
+		result.WriteErrorResponse(nil, err)
 	}
 	req, err := http.NewRequest("PUT", "/capturecharge/paymentintentid", reqbody)
 	if err != nil {
