@@ -8,6 +8,7 @@ import (
 	"os"
 
 	"github.com/gorilla/mux"
+	"github.com/heaptracetechnology/microservice-stripe/result"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 )
@@ -23,7 +24,10 @@ var _ = Describe("Create PaymentIntent operations", func() {
 	pmt := []string{"card"}
 	paymentintent := PaymentIntent{Amount: 1000, Currency: "usd", Paymentmethodtypes: pmt}
 	reqbody := new(bytes.Buffer)
-	json.NewEncoder(reqbody).Encode(paymentintent)
+	err := json.NewEncoder(reqbody).Encode(paymentintent)
+	if err != nil {
+		result.WriteErrorResponse(w, err)
+	}
 	os.Setenv("SECRET_KEY", "sk_test_gENQu8ecxwwMUsWlgsQeqbgI")
 	req, err := http.NewRequest("POST", "/createpaymentintent", reqbody)
 	if err != nil {
@@ -70,9 +74,13 @@ var _ = Describe("Update PaymentIntent operations", func() {
 	os.Setenv("SECRET_KEY", "sk_test_gENQu8ecxwwMUsWlgsQeqbgI")
 	paymentintent := PaymentIntent{Amount: 2000, Currency: "usd"}
 	reqbody := new(bytes.Buffer)
-	json.NewEncoder(reqbody).Encode(paymentintent)
+	err := json.NewEncoder(reqbody).Encode(paymentintent)
+	if err != nil {
+		result.WriteErrorResponse(w, err)
+	}
 	req, err := http.NewRequest("PUT", "/updatepaymentintent/paymentintentid", reqbody)
 	if err != nil {
+		result.WriteErrorResponse(w, err)
 	}
 	vars := map[string]string{
 		"paymentintentid": "pi_1EAHHeJytX7n0OoXQnPHro2u",
@@ -95,7 +103,10 @@ var _ = Describe("Capture PaymentIntent operations", func() {
 	os.Setenv("SECRET_KEY", "sk_test_gENQu8ecxwwMUsWlgsQeqbgI")
 	paymentintent := PaymentIntent{}
 	reqbody := new(bytes.Buffer)
-	json.NewEncoder(reqbody).Encode(paymentintent)
+	err := json.NewEncoder(reqbody).Encode(paymentintent)
+	if err != nil {
+		result.WriteErrorResponse(w, err)
+	}
 	req, err := http.NewRequest("PUT", "/capturecharge/paymentintentid", reqbody)
 	if err != nil {
 	}

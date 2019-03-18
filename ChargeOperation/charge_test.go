@@ -8,6 +8,7 @@ import (
 	"os"
 
 	"github.com/gorilla/mux"
+	"github.com/heaptracetechnology/microservice-stripe/result"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 )
@@ -24,11 +25,14 @@ var _ = Describe("Create charge operations", func() {
 
 	charge := Charge{Amount: 2000, Currency: "usd", Description: "Created test charge", Capture: false}
 	reqbody := new(bytes.Buffer)
-	json.NewEncoder(reqbody).Encode(charge)
-
+	err := json.NewEncoder(reqbody).Encode(charge)
+	if err != nil {
+		result.WriteErrorResponse(w, err)
+	}
 	os.Setenv("SECRET_KEY", "sk_test_gENQu8ecxwwMUsWlgsQeqbgI")
 	req, err := http.NewRequest("POST", "/createcharge", reqbody)
 	if err != nil {
+		result.WriteErrorResponse(w, err)
 	}
 	recorder := httptest.NewRecorder()
 	handler := http.HandlerFunc(CreateCharge)

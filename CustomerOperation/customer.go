@@ -20,7 +20,10 @@ func CreateCustomer(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		result.WriteErrorResponse(w, err)
 	}
-	param.SetSource("tok_amex")
+	err := param.SetSource("tok_amex")
+	if err != nil {
+		result.WriteErrorResponse(w, err)
+	}
 
 	cus, err := customer.New(param)
 	if err != nil {

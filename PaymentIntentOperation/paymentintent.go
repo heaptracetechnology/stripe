@@ -2,13 +2,14 @@ package PaymentIntentOperation
 
 import (
 	"encoding/json"
+	"fmt"
+	"net/http"
+	"os"
+
 	"github.com/gorilla/mux"
 	"github.com/heaptracetechnology/microservice-stripe/result"
 	"github.com/stripe/stripe-go"
 	"github.com/stripe/stripe-go/paymentintent"
-	"fmt"
-	"net/http"
-	"os"
 )
 
 type StripeObject struct {
@@ -29,8 +30,14 @@ func CreatePaymentIntent(w http.ResponseWriter, r *http.Request) {
 	decoder := json.NewDecoder(r.Body)
 	var param *stripe.PaymentIntentParams
 	err := decoder.Decode(&param)
+	if err != nil {
+		result.WriteErrorResponse(w, err)
+	}
 
 	pi, err := paymentintent.New(param)
+	if err != nil {
+		result.WriteErrorResponse(w, err)
+	}
 
 	bytes, err := json.Marshal(pi)
 	if err != nil {
@@ -48,7 +55,9 @@ func RetrievePaymentIntent(w http.ResponseWriter, r *http.Request) {
 	var id = vars["paymentintentid"]
 
 	pi, err := paymentintent.Get(id, nil)
-
+	if err != nil {
+		result.WriteErrorResponse(w, err)
+	}
 	bytes, err := json.Marshal(pi)
 	if err != nil {
 		result.WriteErrorResponse(w, err)
@@ -66,9 +75,13 @@ func UpdatePaymentIntent(w http.ResponseWriter, r *http.Request) {
 	decoderpi := json.NewDecoder(r.Body)
 	var param *stripe.PaymentIntentParams
 	err := decoderpi.Decode(&param)
-
+	if err != nil {
+		result.WriteErrorResponse(w, err)
+	}
 	o, err := paymentintent.Update(id, param)
-
+	if err != nil {
+		result.WriteErrorResponse(w, err)
+	}
 	bytes, err := json.Marshal(o)
 	if err != nil {
 		result.WriteErrorResponse(w, err)
@@ -85,7 +98,9 @@ func CapturePaymentIntent(w http.ResponseWriter, r *http.Request) {
 	decoderpi := json.NewDecoder(r.Body)
 	var param *stripe.PaymentIntentCaptureParams
 	err := decoderpi.Decode(&param)
-
+	if err != nil {
+		result.WriteErrorResponse(w, err)
+	}
 	intent, err := paymentintent.Capture(id, param)
 
 	bytes, err := json.Marshal(intent)
@@ -123,7 +138,7 @@ func ListAllPaymentIntent(w http.ResponseWriter, r *http.Request) {
 		paymentintent := stripe.PaymentIntent{}
 		listpaymentintent = append(listpaymentintent, paymentintent)
 	}
-	fmt.Println("res :::",listpaymentintent)
+	fmt.Println("res :::", listpaymentintent)
 	bytes, err := json.Marshal(&listpaymentintent)
 	if err != nil {
 		result.WriteErrorResponse(w, err)
