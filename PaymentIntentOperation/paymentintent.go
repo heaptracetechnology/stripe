@@ -102,6 +102,9 @@ func CapturePaymentIntent(w http.ResponseWriter, r *http.Request) {
 		result.WriteErrorResponse(w, err)
 	}
 	intent, err := paymentintent.Capture(id, param)
+	if err != nil {
+		result.WriteErrorResponse(w, err)
+	}
 
 	bytes, err := json.Marshal(intent)
 	if err != nil {
@@ -117,7 +120,9 @@ func CancelPaymentIntent(w http.ResponseWriter, r *http.Request) {
 	var id = vars["paymentintentid"]
 
 	intent, err := paymentintent.Cancel(id, nil)
-
+	if err != nil {
+		result.WriteErrorResponse(w, err)
+	}
 	bytes, err := json.Marshal(intent)
 	if err != nil {
 		result.WriteErrorResponse(w, err)
