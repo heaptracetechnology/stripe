@@ -2,9 +2,8 @@ package result
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
-
-	"github.com/heaptracetechnology/microservice-stripe/result"
 )
 
 func GetResult() int {
@@ -27,8 +26,8 @@ func WriteErrorResponse(w http.ResponseWriter, err error) {
 func WriteJsonResponse(w http.ResponseWriter, bytes []byte, code int) {
 	w.WriteHeader(code)
 	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-	err := w.Write(bytes)
+	_, err := w.Write(bytes)
 	if err != nil {
-		result.WriteErrorResponse(w, err)
+		log.Fatal(err)
 	}
 }
