@@ -21,8 +21,10 @@ var _ = Describe("Create Customer operations", func() {
 
 	customer := Customer{Email: "testcust@demo.com", Description: "Test Demo Customer"}
 	reqbody := new(bytes.Buffer)
-	json.NewEncoder(reqbody).Encode(customer)
-
+	err := json.NewEncoder(reqbody).Encode(customer)
+	if err != nil {
+		result.WriteErrorResponse(nil, err)
+	}
 	os.Setenv("SECRET_KEY", "sk_test_gENQu8ecxwwMUsWlgsQeqbgI")
 
 	req, err := http.NewRequest("POST", "/createcustomer", reqbody)
@@ -46,7 +48,10 @@ var _ = Describe("Create Customer operations invalid data", func() {
 	//invalid emailID
 	customer := Customer{Email: "testcustdemocom", Description: "Test Demo Customer"}
 	reqbody := new(bytes.Buffer)
-	json.NewEncoder(reqbody).Encode(customer)
+	err := json.NewEncoder(reqbody).Encode(customer)
+	if err != nil {
+		result.WriteErrorResponse(nil, err)
+	}
 
 	os.Setenv("SECRET_KEY", "sk_test_gENQu8ecxwwMUsWlgsQeqbgI")
 

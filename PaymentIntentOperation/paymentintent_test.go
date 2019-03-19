@@ -31,6 +31,7 @@ var _ = Describe("Create PaymentIntent operations", func() {
 	os.Setenv("SECRET_KEY", "sk_test_gENQu8ecxwwMUsWlgsQeqbgI")
 	req, err := http.NewRequest("POST", "/createpaymentintent", reqbody)
 	if err != nil {
+		result.WriteErrorResponse(nil, err)
 	}
 
 	recorder := httptest.NewRecorder()
@@ -50,6 +51,7 @@ var _ = Describe("Retrive PaymentIntent operations", func() {
 	os.Setenv("SECRET_KEY", "sk_test_gENQu8ecxwwMUsWlgsQeqbgI")
 	req, err := http.NewRequest("GET", "/retrievepaymentIntent/paymentintentid", nil)
 	if err != nil {
+		result.WriteErrorResponse(nil, err)
 	}
 	vars := map[string]string{
 		"paymentintentid": "pi_1EAHHeJytX7n0OoXQnPHro2u",
@@ -109,6 +111,7 @@ var _ = Describe("Capture PaymentIntent operations", func() {
 	}
 	req, err := http.NewRequest("PUT", "/capturecharge/paymentintentid", reqbody)
 	if err != nil {
+		result.WriteErrorResponse(nil, err)
 	}
 	vars := map[string]string{
 		"paymentintentid": "pi_1EAHHeJytX7n0OoXQnPHro2u",
@@ -132,7 +135,10 @@ var _ = Describe("Cancel PaymentIntent operations", func() {
 	os.Setenv("SECRET_KEY", "sk_test_gENQu8ecxwwMUsWlgsQeqbgI")
 	paymentintent := PaymentIntent{}
 	reqbody := new(bytes.Buffer)
-	json.NewEncoder(reqbody).Encode(paymentintent)
+	err := json.NewEncoder(reqbody).Encode(paymentintent)
+	if err != nil {
+		result.WriteErrorResponse(nil, err)
+	}
 	req, err := http.NewRequest("POST", "/cancelpaymentintent/paymentintentid", nil)
 	if err != nil {
 		result.WriteErrorResponse(nil, err)
