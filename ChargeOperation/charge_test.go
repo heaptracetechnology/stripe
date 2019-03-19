@@ -51,14 +51,17 @@ var _ = Describe("Capture Charge operations", func() {
 
 	charge := Charge{Amount: 300}
 	reqbody := new(bytes.Buffer)
-	json.NewEncoder(reqbody).Encode(charge)
-
+	err := json.NewEncoder(reqbody).Encode(charge)
+	if err != nil {
+		result.WriteErrorResponse(nil, err)
+	}
 	os.Setenv("SECRET_KEY", "sk_test_gENQu8ecxwwMUsWlgsQeqbgI")
 	req, err := http.NewRequest("POST", "/capturecharge/charge", reqbody)
 	if err != nil {
+		result.WriteErrorResponse(nil, err)
 	}
 	vars := map[string]string{
-		"charge": "ch_1EFMyQJytX7n0OoXRlGgTDM9",
+		"charge": "ch_1EFMxfJytX7n0OoXLpFMdatt",
 	}
 
 	req = mux.SetURLVars(req, vars)

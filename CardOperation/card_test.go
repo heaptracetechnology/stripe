@@ -24,7 +24,10 @@ var _ = Describe("Create Card operations with bad data", func() {
 	os.Setenv("SECRET_KEY", "sk_test_Ma5sDiK8tRrvg1eHVew4SYEN")
 	card := Card{Source: "das", Customer: "", Metadata: ""}
 	reqbody := new(bytes.Buffer)
-	json.NewEncoder(reqbody).Encode(card)
+	err := json.NewEncoder(reqbody).Encode(card)
+	if err != nil {
+		result.WriteErrorResponse(nil, err)
+	}
 
 	req, err := http.NewRequest("POST", "/createcard", reqbody)
 	if err != nil {
@@ -57,10 +60,13 @@ var _ = Describe("Create Card operations with valid data", func() {
 	param.Customer = stripe.String("cus_Ec3jzrWwFQrVYJ")
 	param.Token = stripe.String("Mastercard")
 	reqbody := new(bytes.Buffer)
-	json.NewEncoder(reqbody).Encode(param)
-
+	err := json.NewEncoder(reqbody).Encode(param)
+	if err != nil {
+		result.WriteErrorResponse(nil, err)
+	}
 	req, err := http.NewRequest("POST", "/createcard", reqbody)
 	if err != nil {
+		result.WriteErrorResponse(nil, err)
 	}
 	recorder := httptest.NewRecorder()
 	handler := http.HandlerFunc(CreateCard)

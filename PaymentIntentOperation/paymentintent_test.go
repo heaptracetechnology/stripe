@@ -135,6 +135,7 @@ var _ = Describe("Cancel PaymentIntent operations", func() {
 	json.NewEncoder(reqbody).Encode(paymentintent)
 	req, err := http.NewRequest("POST", "/cancelpaymentintent/paymentintentid", nil)
 	if err != nil {
+		result.WriteErrorResponse(nil, err)
 	}
 	vars := map[string]string{
 		"paymentintentid": "pi_1EAHHeJytX7n0OoXQnPHro2u",
