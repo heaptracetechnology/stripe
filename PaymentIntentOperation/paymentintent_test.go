@@ -165,6 +165,7 @@ var _ = Describe("List All PaymentIntent operations", func() {
 	os.Setenv("SECRET_KEY", "sk_test_gENQu8ecxwwMUsWlgsQeqbgI")
 	req, err := http.NewRequest("GET", "/listallpaymentintent", nil)
 	if err != nil {
+		result.WriteErrorResponse(nil, err)
 	}
 
 	recorder := httptest.NewRecorder()
