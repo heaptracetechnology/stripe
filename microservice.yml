@@ -9,7 +9,7 @@ info:
   contact:
     name: Rohit Shetty
     url: https://github.com/ht68rohit
-    email: rohits@heptrace.com
+    email: rohits@heaptrace.com
   license:
     name: MIT
     url: https://opensource.org/licenses/MIT 
@@ -107,7 +107,7 @@ actions:
           help: The ID for charge created
           type: string
         receipturl:
-          help: The url for recipt from
+          help: The url for receipt from
           type: string 
         source:
           help: The source details
@@ -170,7 +170,7 @@ actions:
           help: The ID for charge created
           type: string
         receipt_url:
-          help: The url for recipt from
+          help: The url for receipt from
           type: string 
         source:
           help: The source details
@@ -497,7 +497,7 @@ actions:
           help: The currency type
           type: string
         description:
-          help: The description for cancelation payment initent
+          help: The description for cancellation payment intent
           type: string
         status:
           help: The status as "canceled"
@@ -571,7 +571,7 @@ actions:
         type: object
         in: requestBody
         required: false
-        help: nformation about a mandate possibility attached to a source object (generally for bank debits) as well as its acceptance status
+        help: Information about a mandate possibility attached to a source object (generally for bank debits) as well as its acceptance status
     output:
       type: object
       contentType: application/json
@@ -687,12 +687,12 @@ actions:
         type: object
         in: requestBody
         required: true
-        help: The object of card details, requird feilds are object(type of payment source. Should be card),number(card number), exp_month, exp_year
+        help: The object of card details, required fields are object(type of payment source. Should be card),number(card number), exp_month, exp_year
       customer:
         type: string
         in: requestBody
         required: true
-        help: The created crad will assoscite with customer ID
+        help: The created card will associate with customer ID
       token:
         type: string
         in: requestBody
@@ -731,12 +731,12 @@ actions:
         type: object
         in: requestBody
         required: false
-        help: The object of card details, requird feilds are object(type of payment source. Should be card),number(card number), exp_month, exp_year
+        help: The object of card details, required fields are object(type of payment source. Should be card),number(card number), exp_month, exp_year
       customer:
         type: string
         in: requestBody
         required: false
-        help: The token for card will assoscite with customer ID
+        help: The token for card will associate with customer ID
     output:
       type: object
       contentType: application/json
