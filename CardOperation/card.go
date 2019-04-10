@@ -10,22 +10,23 @@ import (
 	"github.com/stripe/stripe-go/card"
 )
 
-func CreateCard(w http.ResponseWriter, r *http.Request) {
+func CreateCard(responseWriter http.ResponseWriter, request *http.Request) {
+
 	stripe.Key = os.Getenv("SECRET_KEY")
 
-	decoder := json.NewDecoder(r.Body)
+	decoder := json.NewDecoder(request.Body)
 	var param *stripe.CardParams
 	err := decoder.Decode(&param)
 	if err != nil {
-		result.WriteErrorResponse(w, err)
+		result.WriteErrorResponse(responseWriter, err)
 		return
 	}
 
 	card, err := card.New(param)
 	if err != nil {
-		result.WriteErrorResponse(w, err)
+		result.WriteErrorResponse(responseWriter, err)
 		return
 	}
 	bytes, _ := json.Marshal(card)
-	result.WriteJsonResponse(w, bytes, http.StatusCreated)
+	result.WriteJsonResponse(responseWriter, bytes, http.StatusCreated)
 }

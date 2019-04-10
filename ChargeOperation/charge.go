@@ -12,10 +12,11 @@ import (
 )
 
 //CreateCharge
-func CreateCharge(w http.ResponseWriter, r *http.Request) {
+func CreateCharge(responseWriter http.ResponseWriter, request *http.Request) {
+
 	stripe.Key = os.Getenv("SECRET_KEY")
 
-	decoder := json.NewDecoder(r.Body)
+	decoder := json.NewDecoder(request.Body)
 	var param *stripe.ChargeParams
 	err := decoder.Decode(&param)
 	if err != nil {
@@ -31,17 +32,18 @@ func CreateCharge(w http.ResponseWriter, r *http.Request) {
 		result.WriteErrorResponse(nil, err)
 	}
 	bytes, _ := json.Marshal(ch)
-	result.WriteJsonResponse(w, bytes, http.StatusCreated)
+	result.WriteJsonResponse(responseWriter, bytes, http.StatusCreated)
 }
 
 //Capture Charge
-func CaptureCharge(w http.ResponseWriter, r *http.Request) {
+func CaptureCharge(responseWriter http.ResponseWriter, request *http.Request) {
+
 	stripe.Key = os.Getenv("SECRET_KEY")
 
-	vars := mux.Vars(r)
+	vars := mux.Vars(request)
 	var charge_id = vars["charge"]
 
-	decoder := json.NewDecoder(r.Body)
+	decoder := json.NewDecoder(request.Body)
 	var param *stripe.CaptureParams
 	err := decoder.Decode(&param)
 	if err != nil {
@@ -52,5 +54,5 @@ func CaptureCharge(w http.ResponseWriter, r *http.Request) {
 		result.WriteErrorResponse(nil, err)
 	}
 	bytes, _ := json.Marshal(ch)
-	result.WriteJsonResponse(w, bytes, http.StatusOK)
+	result.WriteJsonResponse(responseWriter, bytes, http.StatusOK)
 }

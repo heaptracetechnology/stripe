@@ -18,15 +18,15 @@ func GetResultOK() int {
 	return http.StatusOK
 }
 
-func WriteErrorResponse(w http.ResponseWriter, err error) {
+func WriteErrorResponse(responseWriter http.ResponseWriter, err error) {
 	msgbytes, _ := json.Marshal(err)
-	WriteJsonResponse(w, msgbytes, http.StatusBadRequest)
+	WriteJsonResponse(responseWriter, msgbytes, http.StatusBadRequest)
 }
 
-func WriteJsonResponse(w http.ResponseWriter, bytes []byte, code int) {
-	w.WriteHeader(code)
-	w.Header().Set("Content-Type", "application/json; charset=UTF-8")
-	_, err := w.Write(bytes)
+func WriteJsonResponse(responseWriter http.ResponseWriter, bytes []byte, code int) {
+	responseWriter.Header().Set("Content-Type", "application/json; charset=UTF-8")
+	responseWriter.WriteHeader(code)
+	_, err := responseWriter.Write(bytes)
 	if err != nil {
 		log.Fatal(err)
 	}

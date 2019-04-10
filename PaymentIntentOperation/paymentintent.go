@@ -23,115 +23,119 @@ type Message struct {
 }
 
 //Create PaymentIntent
-func CreatePaymentIntent(w http.ResponseWriter, r *http.Request) {
+func CreatePaymentIntent(responseWriter http.ResponseWriter, request *http.Request) {
 
 	stripe.Key = os.Getenv("SECRET_KEY")
 
-	decoder := json.NewDecoder(r.Body)
+	decoder := json.NewDecoder(request.Body)
 	var param *stripe.PaymentIntentParams
 	err := decoder.Decode(&param)
 	if err != nil {
-		result.WriteErrorResponse(w, err)
+		result.WriteErrorResponse(responseWriter, err)
 	}
 
 	pi, err := paymentintent.New(param)
 	if err != nil {
-		result.WriteErrorResponse(w, err)
+		result.WriteErrorResponse(responseWriter, err)
 	}
 
 	bytes, err := json.Marshal(pi)
 	if err != nil {
-		result.WriteErrorResponse(w, err)
+		result.WriteErrorResponse(responseWriter, err)
 	}
-	result.WriteJsonResponse(w, bytes, http.StatusCreated)
+	result.WriteJsonResponse(responseWriter, bytes, http.StatusCreated)
 }
 
 //Retrieve PaymentIntent
-func RetrievePaymentIntent(w http.ResponseWriter, r *http.Request) {
+func RetrievePaymentIntent(responseWriter http.ResponseWriter, request *http.Request) {
 
 	stripe.Key = os.Getenv("SECRET_KEY")
 
-	vars := mux.Vars(r)
+	vars := mux.Vars(request)
 	var id = vars["paymentintentid"]
 
 	pi, err := paymentintent.Get(id, nil)
 	if err != nil {
-		result.WriteErrorResponse(w, err)
+		result.WriteErrorResponse(responseWriter, err)
 	}
 	bytes, err := json.Marshal(pi)
 	if err != nil {
-		result.WriteErrorResponse(w, err)
+		result.WriteErrorResponse(responseWriter, err)
 	}
-	result.WriteJsonResponse(w, bytes, http.StatusOK)
+	result.WriteJsonResponse(responseWriter, bytes, http.StatusOK)
 }
 
 //Update PaymentIntent
-func UpdatePaymentIntent(w http.ResponseWriter, r *http.Request) {
+func UpdatePaymentIntent(responseWriter http.ResponseWriter, request *http.Request) {
+
 	stripe.Key = os.Getenv("SECRET_KEY")
 
-	vars := mux.Vars(r)
+	vars := mux.Vars(request)
 	var id = vars["paymentintentid"]
 
-	decoderpi := json.NewDecoder(r.Body)
+	decoderpi := json.NewDecoder(request.Body)
 	var param *stripe.PaymentIntentParams
 	err := decoderpi.Decode(&param)
 	if err != nil {
-		result.WriteErrorResponse(w, err)
+		result.WriteErrorResponse(responseWriter, err)
 	}
 	o, err := paymentintent.Update(id, param)
 	if err != nil {
-		result.WriteErrorResponse(w, err)
+		result.WriteErrorResponse(responseWriter, err)
 	}
 	bytes, err := json.Marshal(o)
 	if err != nil {
-		result.WriteErrorResponse(w, err)
+		result.WriteErrorResponse(responseWriter, err)
 	}
-	result.WriteJsonResponse(w, bytes, http.StatusOK)
+	result.WriteJsonResponse(responseWriter, bytes, http.StatusOK)
 }
 
 //Capture PaymentIntent
-func CapturePaymentIntent(w http.ResponseWriter, r *http.Request) {
+func CapturePaymentIntent(responseWriter http.ResponseWriter, request *http.Request) {
+
 	stripe.Key = os.Getenv("SECRET_KEY")
-	vars := mux.Vars(r)
+	vars := mux.Vars(request)
 	var id = vars["paymentintentid"]
 
-	decoderpi := json.NewDecoder(r.Body)
+	decoderpi := json.NewDecoder(request.Body)
 	var param *stripe.PaymentIntentCaptureParams
 	err := decoderpi.Decode(&param)
 	if err != nil {
-		result.WriteErrorResponse(w, err)
+		result.WriteErrorResponse(responseWriter, err)
 	}
 	intent, err := paymentintent.Capture(id, param)
 	if err != nil {
-		result.WriteErrorResponse(w, err)
+		result.WriteErrorResponse(responseWriter, err)
 	}
 
 	bytes, err := json.Marshal(intent)
 	if err != nil {
-		result.WriteErrorResponse(w, err)
+		result.WriteErrorResponse(responseWriter, err)
 	}
-	result.WriteJsonResponse(w, bytes, http.StatusOK)
+	result.WriteJsonResponse(responseWriter, bytes, http.StatusOK)
 }
 
 //Cancel PaymentIntent
-func CancelPaymentIntent(w http.ResponseWriter, r *http.Request) {
+func CancelPaymentIntent(responseWriter http.ResponseWriter, request *http.Request) {
+
 	stripe.Key = os.Getenv("SECRET_KEY")
-	vars := mux.Vars(r)
+	vars := mux.Vars(request)
 	var id = vars["paymentintentid"]
 
 	intent, err := paymentintent.Cancel(id, nil)
 	if err != nil {
-		result.WriteErrorResponse(w, err)
+		result.WriteErrorResponse(responseWriter, err)
 	}
 	bytes, err := json.Marshal(intent)
 	if err != nil {
-		result.WriteErrorResponse(w, err)
+		result.WriteErrorResponse(responseWriter, err)
 	}
-	result.WriteJsonResponse(w, bytes, http.StatusOK)
+	result.WriteJsonResponse(responseWriter, bytes, http.StatusOK)
 }
 
 //List All PaymentIntent
-func ListAllPaymentIntent(w http.ResponseWriter, r *http.Request) {
+func ListAllPaymentIntent(responseWriter http.ResponseWriter, request *http.Request) {
+
 	stripe.Key = os.Getenv("SECRET_KEY")
 
 	params := stripe.PaymentIntentListParams{}
@@ -146,7 +150,7 @@ func ListAllPaymentIntent(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("res :::", listpaymentintent)
 	bytes, err := json.Marshal(&listpaymentintent)
 	if err != nil {
-		result.WriteErrorResponse(w, err)
+		result.WriteErrorResponse(responseWriter, err)
 	}
-	result.WriteJsonResponse(w, bytes, http.StatusOK)
+	result.WriteJsonResponse(responseWriter, bytes, http.StatusOK)
 }

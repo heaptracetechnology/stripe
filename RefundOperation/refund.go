@@ -11,10 +11,11 @@ import (
 )
 
 //Create Refund
-func CreateRefund(w http.ResponseWriter, r *http.Request) {
+func CreateRefund(responseWriter http.ResponseWriter, request *http.Request) {
+
 	stripe.Key = os.Getenv("SECRET_KEY")
 
-	decoder := json.NewDecoder(r.Body)
+	decoder := json.NewDecoder(request.Body)
 	var param *stripe.RefundParams
 	err := decoder.Decode(&param)
 	if err != nil {
@@ -26,5 +27,5 @@ func CreateRefund(w http.ResponseWriter, r *http.Request) {
 		result.WriteErrorResponse(nil, err)
 	}
 	bytes, _ := json.Marshal(refunded)
-	result.WriteJsonResponse(w, bytes, http.StatusCreated)
+	result.WriteJsonResponse(responseWriter, bytes, http.StatusCreated)
 }

@@ -11,10 +11,11 @@ import (
 )
 
 //Create Cusytomer
-func CreateCustomer(w http.ResponseWriter, r *http.Request) {
+func CreateCustomer(responseWriter http.ResponseWriter, request *http.Request) {
+
 	stripe.Key = os.Getenv("SECRET_KEY")
 
-	decoder := json.NewDecoder(r.Body)
+	decoder := json.NewDecoder(request.Body)
 	var param *stripe.CustomerParams
 	err := decoder.Decode(&param)
 	if err != nil {
@@ -27,9 +28,9 @@ func CreateCustomer(w http.ResponseWriter, r *http.Request) {
 
 	cus, err := customer.New(param)
 	if err != nil {
-		result.WriteErrorResponse(w, err)
+		result.WriteErrorResponse(responseWriter, err)
 		return
 	}
 	bytes, _ := json.Marshal(cus)
-	result.WriteJsonResponse(w, bytes, http.StatusCreated)
+	result.WriteJsonResponse(responseWriter, bytes, http.StatusCreated)
 }

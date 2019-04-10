@@ -11,15 +11,15 @@ import (
 )
 
 //GetBalance
-func GetBalance(w http.ResponseWriter, r *http.Request) {
+func GetBalance(responseWriter http.ResponseWriter, request *http.Request) {
 
 	stripe.Key = os.Getenv("SECRET_KEY")
 	b, err := balance.Get(nil)
 	if err != nil {
-		result.WriteErrorResponse(w, err)
+		result.WriteErrorResponse(responseWriter, err)
 		return
 	}
 	bytes, _ := json.Marshal(b)
-	w.WriteHeader(http.StatusOK)
-	result.WriteJsonResponse(w, bytes, http.StatusOK)
+	responseWriter.WriteHeader(http.StatusOK)
+	result.WriteJsonResponse(responseWriter, bytes, http.StatusOK)
 }
