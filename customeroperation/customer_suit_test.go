@@ -1,4 +1,4 @@
-package ChargeOperation
+package customeroperation
 
 import (
 	"testing"
@@ -8,8 +8,8 @@ import (
 	. "github.com/onsi/gomega"
 )
 
-func TestCharge(t *testing.T) {
+func TestCard(t *testing.T) {
 	RegisterFailHandler(Fail)
 	junitReporter := reporters.NewJUnitReporter("../test-report/cireport.txt")
-	RunSpecsWithDefaultAndCustomReporters(t, "Charge Operations", []Reporter{junitReporter})
+	RunSpecsWithDefaultAndCustomReporters(t, "Customer Operations", []Reporter{junitReporter})
 }

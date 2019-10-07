@@ -1,10 +1,11 @@
-package PaymentIntentOperation
+package paymentintentoperation
 
 import (
+	"testing"
+
 	. "github.com/onsi/ginkgo"
 	"github.com/onsi/ginkgo/reporters"
 	. "github.com/onsi/gomega"
-	"testing"
 )
 
 func TestPaymentIntent(t *testing.T) {

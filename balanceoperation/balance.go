@@ -1,4 +1,4 @@
-package BalanceOperation
+package balanceoperation
 
 import (
 	"encoding/json"
@@ -10,16 +10,15 @@ import (
 	"github.com/stripe/stripe-go/balance"
 )
 
-//GetBalance
+//GetBalance stripe
 func GetBalance(responseWriter http.ResponseWriter, request *http.Request) {
 
 	stripe.Key = os.Getenv("SECRET_KEY")
-	b, err := balance.Get(nil)
+	bal, err := balance.Get(nil)
 	if err != nil {
 		result.WriteErrorResponse(responseWriter, err)
-		return
 	}
-	bytes, _ := json.Marshal(b)
+	bytes, _ := json.Marshal(bal)
 	responseWriter.WriteHeader(http.StatusOK)
 	result.WriteJsonResponse(responseWriter, bytes, http.StatusOK)
 }

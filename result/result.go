@@ -6,18 +6,6 @@ import (
 	"net/http"
 )
 
-func GetResult() int {
-	return http.StatusOK
-}
-
-func GetResultCreated() int {
-	return http.StatusCreated
-}
-
-func GetResultOK() int {
-	return http.StatusOK
-}
-
 func WriteErrorResponse(responseWriter http.ResponseWriter, err error) {
 	msgbytes, _ := json.Marshal(err)
 	WriteJsonResponse(responseWriter, msgbytes, http.StatusBadRequest)

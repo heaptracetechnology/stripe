@@ -1,4 +1,4 @@
-package RefundOperation
+package cardoperation
 
 import (
 	"encoding/json"
@@ -7,25 +7,27 @@ import (
 
 	"github.com/heaptracetechnology/microservice-stripe/result"
 	"github.com/stripe/stripe-go"
-	"github.com/stripe/stripe-go/refund"
+	"github.com/stripe/stripe-go/card"
 )
 
-//Create Refund
-func CreateRefund(responseWriter http.ResponseWriter, request *http.Request) {
+//CreateCard stripe
+func CreateCard(responseWriter http.ResponseWriter, request *http.Request) {
 
 	stripe.Key = os.Getenv("SECRET_KEY")
 
 	decoder := json.NewDecoder(request.Body)
-	var param *stripe.RefundParams
+	var param *stripe.CardParams
 	err := decoder.Decode(&param)
 	if err != nil {
-		result.WriteErrorResponse(nil, err)
+		result.WriteErrorResponse(responseWriter, err)
+		return
 	}
 
-	refunded, err := refund.New(param)
+	card, err := card.New(param)
 	if err != nil {
-		result.WriteErrorResponse(nil, err)
+		result.WriteErrorResponse(responseWriter, err)
+		return
 	}
-	bytes, _ := json.Marshal(refunded)
+	bytes, _ := json.Marshal(card)
 	result.WriteJsonResponse(responseWriter, bytes, http.StatusCreated)
 }

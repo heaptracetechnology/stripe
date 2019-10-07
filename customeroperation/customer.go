@@ -1,4 +1,4 @@
-package CustomerOperation
+package customeroperation
 
 import (
 	"encoding/json"
@@ -10,7 +10,7 @@ import (
 	"github.com/stripe/stripe-go/customer"
 )
 
-//Create Cusytomer
+//CreateCustomer stripe
 func CreateCustomer(responseWriter http.ResponseWriter, request *http.Request) {
 
 	stripe.Key = os.Getenv("SECRET_KEY")
@@ -21,16 +21,17 @@ func CreateCustomer(responseWriter http.ResponseWriter, request *http.Request) {
 	if err != nil {
 		result.WriteErrorResponse(nil, err)
 	}
-	errr := param.SetSource("tok_amex")
-	if errr != nil {
-		result.WriteErrorResponse(nil, errr)
+	sourceErr := param.SetSource("tok_amex")
+	if sourceErr != nil {
+		result.WriteErrorResponse(nil, sourceErr)
 	}
 
-	cus, err := customer.New(param)
+	customer, err := customer.New(param)
 	if err != nil {
 		result.WriteErrorResponse(responseWriter, err)
 		return
 	}
-	bytes, _ := json.Marshal(cus)
+	bytes, _ := json.Marshal(customer)
 	result.WriteJsonResponse(responseWriter, bytes, http.StatusCreated)
+
 }

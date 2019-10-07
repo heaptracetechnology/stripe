@@ -1,86 +1,127 @@
-# Stripe as a microservice
-An OMG service for Stripe, it allows individuals and businesses to receive payments over the Internet. Stripe provides the technical, fraud prevention, and banking infrastructure required to operate on-line payment systems.
+# _Stripe_ OMG Microservice
 
-[![Open Microservice Guide](https://img.shields.io/badge/OMG-enabled-brightgreen.svg?style=for-the-badge)](https://microservice.guide)
+[![Open Microservice Guide](https://img.shields.io/badge/OMG%20Enabled-👍-green.svg?)](https://microservice.guide)
 [![Build Status](https://travis-ci.com/heaptracetechnology/microservice-stripe.svg?branch=master)](https://travis-ci.com/heaptracetechnology/microservice-stripe)
 [![codecov](https://codecov.io/gh/heaptracetechnology/microservice-stripe/branch/master/graph/badge.svg)](https://codecov.io/gh/heaptracetechnology/microservice-stripe)
 
-## [OMG](hhttps://microservice.guide) CLI
+An OMG service for Stripe, it allows individuals and businesses to receive payments over the Internet. Stripe provides the technical, fraud prevention, and banking infrastructure required to operate on-line payment systems.
 
-### OMG
-
-* omg validate
-```
-omg validate
-```
-* omg build
-```
-omg build
-```
-### Test Service
-
-* Test the service by following OMG commands
-
-### CLI
+## Usage in [Storyscript](https://storyscript.io/)
 
 ##### Create Charge
-```sh
-$ omg run create_charge -a amount=<AMOUNT> -a currency=<CURRENCY> -a description=<DESCRIPTION> -a capture=<TRUE/FALSE>  -e SECRET_KEY=<SECRET_KEY>
+```coffee
+stripe createCharge amount:'amount' currency:'currency' description:'description' capture:'capture'
+```
+
+##### Capture Charge
+```coffee
+stripe captureCharge charge:'charge'
+```
+
+##### Get Balance
+```coffee
+stripe getBalance
+```
+
+##### Create Paymentintent
+```coffee
+stripe createPaymentIntent amount:'amount' customer:'customer' savePaymentMethod:'savePaymentMethod' captureMethod:'captureMethod' currency:'currency' paymentMethodTypes:'paymentMethodTypes'
+```
+
+##### Retrive Paymentintent
+```coffee
+stripe retrievePaymentIntent paymentIntentID:'paymentIntentID'
+```
+
+##### Update Paymentintent
+```coffee
+stripe updatePaymentIntent amount:'amount' paymentIntentID:'paymentIntentID' shipping:'shipping'
+```
+
+##### Capture Paymentintent
+```coffee
+stripe capturePaymentIntent paymentIntentID:'paymentIntentID' amountToCapture:'amountToCapture'
+```
+
+##### Cancel PaymentIntent
+```coffee
+stripe cancelPaymentIntent paymentIntentID:'paymentIntentID'
+```
+
+##### List PaymentIntent
+```coffee
+stripe listAllPaymentIntent
+```
+
+##### Create Customer
+```coffee
+stripe createCustomer description:'description' email:'email'
+```
+
+##### Create Card
+```coffee
+stripe createCard source:'source' customer:'customer' metadata:'metadata' token:'token'
+```
+
+##### Create Refund
+```coffee
+stripe createRefund charge:'charge'
+```
+
+Curious to [learn more](https://docs.storyscript.io/)?
+
+✨🍰✨
+
+## Usage with [OMG CLI](https://www.npmjs.com/package/omg)
+##### Create Charge
+```shell
+$ omg run createCharge -a amount=<AMOUNT> -a currency=<CURRENCY> -a description=<DESCRIPTION> -a capture=<TRUE/FALSE> -e SECRET_KEY=<SECRET_KEY>
 ```
 ##### Capture Charge
-```sh
-$ omg run capture_charge -a charge=<CHARGE_ID> -e SECRET_KEY=<SECRET_KEY>
+```shell
+$ omg run captureCharge -a charge=<CHARGE_ID> -e SECRET_KEY=<SECRET_KEY>
 ```
 ##### Get Balance
-```sh
-$ omg run get_balance -e SECRET_KEY=<SECRET_KEY>
+```shell
+$ omg run getBalance -e SECRET_KEY=<SECRET_KEY>
 ```
 ##### Create Paymentintent
-```sh
-$ omg run create_payment_intent -a amount=<AMOUNT> -a currency=<CURRENCY> -a customer=<CUSTOMER_ID> -a savepaymentmethod=<TRUE/FALSE> -a capturemethod=<AUTOMATIC/MANUAL> -a paymentmethodtypes=<METHOD_LIST> -e SECRET_KEY=<SECRET_KEY>
+```shell
+$ omg run createPaymentIntent -a amount=<AMOUNT> -a customer=<CUSTOMER_ID> -a savePaymentMethod=<TRUE/FALSE> -a captureMethod=<AUTOMATIC/MANUAL> -a currency=<CURRENCY> -a paymentMethodTypes=<METHOD_LIST> -e SECRET_KEY=<SECRET_KEY>
 ```
 ##### Retrive Paymentintent
-```sh
-$ omg run retrieve_payment_intent -a paymentintentid=<PAYMENTINTENT_ID> -e SECRET_KEY=<SECRET_KEY>
+```shell
+$ omg run retrievePaymentIntent -a paymentIntentID=<PAYMENTINTENT_ID> -e SECRET_KEY=<SECRET_KEY>
 ```
+
 ##### Update Paymentintent
-```sh
-$ omg run update_payment_intent -a amount=<AMOUNT> -a paymentintentid=<PAYMENTINTENT_ID> -a shipping=<SHIPPING_OBJECT> -e SECRET_KEY=<SECRET_KEY>
+```shell
+$ omg run updatePaymentIntent -a amount=<AMOUNT> -a paymentIntentID=<PAYMENTINTENT_ID> -a shipping=<SHIPPING_OBJECT> -e SECRET_KEY=<SECRET_KEY>
 ```
 ##### Capture Paymentintent
-```sh
-$ omg run capture_payment_intent -a paymentintentid=<PAYMENTINTENT_ID> -a amounttocapture=<AMOUNT_TO_CAPTURE> -e SECRET_KEY=sk_test_gENQu8ecxwwMUsWlgsQeqbgI
+```shell
+$ omg run capturePaymentIntent -a paymentIntentID=<PAYMENTINTENT_ID> -a amountToCapture=<AMOUNT_TO_CAPTURE> -e SECRET_KEY=<SECRET_KEY>
 ```
 ##### Cancel PaymentIntent
-```sh
-$ omg run cancel_payment_intent -a paymentintentid=<PAYMENTINTENT_ID> -e SECRET_KEY=<SECRET_KEY>
+```shell
+$ omg run cancelPaymentIntent -a paymentIntentID=<PAYMENTINTENT_ID> -e SECRET_KEY=<SECRET_KEY>
 ```
 ##### List PaymentIntent
-```sh
-omg run list_all_payment_intent -e SECRET_KEY=<SECRET_KEY>
+```shell
+$ omg run listAllPaymentIntent -e SECRET_KEY=<SECRET_KEY>
 ```
 ##### Create Customer
-```sh
-$ omg run create_customer -a description=<DESCRIPTION> -a email=<CUSTOMER_EMAIL> -e SECRET_KEY=<SECRET_KEY>
+```shell
+$ omg run createCustomer -a description=<DESCRIPTION> -a email=<CUSTOMER_EMAIL> -e SECRET_KEY=<SECRET_KEY>
 ```
 ##### Create Card
-```sh
-$ omg run create_card -a source=<SOURCE_DETAILS> -a customer=<CUSTOMER_ID> -a metadata=<METADATA> -a token=<CARD_TOKEN>  -e SECRET_KEY=<SECRET_KEY>
+```shell
+$ omg run createCard -a source=<SOURCE_DETAILS> -a customer=<CUSTOMER_ID> -a metadata=<METADATA> -a token=<CARD_TOKEN>  -e SECRET_KEY=<SECRET_KEY>
 ```
 ##### Create Refund
-```sh
-$ omg run create_refund -a charge=<CHARGE_ID> -e SECRET_KEY=<SECRET_KEY>
+```shell
+$ omg run createRefund -a charge=<CHARGE_ID> -e SECRET_KEY=<SECRET_KEY>
 ```
 
 ## License
-### [MIT](https://choosealicense.com/licenses/mit/)
-
-## Docker
-### Build
-```
-docker build -t microservice-stripe .
-```
-### RUN
-```
-docker run -p 3000:3000 microservice-stripe
-```
+[MIT License](https://github.com/omg-services/stripe/blob/master/LICENSE).

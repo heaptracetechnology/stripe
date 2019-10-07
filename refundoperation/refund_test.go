@@ -1,4 +1,4 @@
-package RefundOperation
+package refundoperation
 
 import (
 	"bytes"
@@ -7,7 +7,6 @@ import (
 	"net/http/httptest"
 	"os"
 
-	"github.com/heaptracetechnology/microservice-stripe/result"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 )
@@ -16,18 +15,17 @@ type Refund struct {
 	ChargeId string `json:"charge"`
 }
 
+var secretKey = os.Getenv("STRIPE_SECRET_KEY")
+
 var _ = Describe("Create Refund operations", func() {
 
 	refund := Refund{ChargeId: "ch_1EAIJQJytX7n0OoXhSP6RTc9"}
 	reqbody := new(bytes.Buffer)
-	err := json.NewEncoder(reqbody).Encode(refund)
-	if err != nil {
-		result.WriteErrorResponse(nil, err)
-	}
-	os.Setenv("SECRET_KEY", "sk_test_gENQu8ecxwwMUsWlgsQeqbgI")
+	json.NewEncoder(reqbody).Encode(refund)
+
+	os.Setenv("SECRET_KEY", secretKey)
 	req, err := http.NewRequest("POST", "/createrefund", reqbody)
 	if err != nil {
-		result.WriteErrorResponse(nil, err)
 	}
 	recorder := httptest.NewRecorder()
 	handler := http.HandlerFunc(CreateRefund)

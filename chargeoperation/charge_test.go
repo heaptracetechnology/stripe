@@ -1,4 +1,4 @@
-package ChargeOperation
+package chargeoperation
 
 import (
 	"bytes"
@@ -8,7 +8,6 @@ import (
 	"os"
 
 	"github.com/gorilla/mux"
-	"github.com/heaptracetechnology/microservice-stripe/result"
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
 )
@@ -21,18 +20,17 @@ type Charge struct {
 	ChargeID    string `json:"charge"`
 }
 
+var secretKey = os.Getenv("STRIPE_SECRET_KEY")
+
 var _ = Describe("Create charge operations", func() {
 
 	charge := Charge{Amount: 2000, Currency: "usd", Description: "Created test charge", Capture: false}
 	reqbody := new(bytes.Buffer)
-	err := json.NewEncoder(reqbody).Encode(charge)
+	json.NewEncoder(reqbody).Encode(charge)
+
+	os.Setenv("SECRET_KEY", secretKey)
+	req, err := http.NewRequest("POST", "/createCharge", reqbody)
 	if err != nil {
-		result.WriteErrorResponse(nil, err)
-	}
-	os.Setenv("SECRET_KEY", "sk_test_gENQu8ecxwwMUsWlgsQeqbgI")
-	req, err := http.NewRequest("POST", "/createcharge", reqbody)
-	if err != nil {
-		result.WriteErrorResponse(nil, err)
 	}
 	recorder := httptest.NewRecorder()
 	handler := http.HandlerFunc(CreateCharge)
@@ -51,17 +49,14 @@ var _ = Describe("Capture Charge operations", func() {
 
 	charge := Charge{Amount: 300}
 	reqbody := new(bytes.Buffer)
-	err := json.NewEncoder(reqbody).Encode(charge)
-	if err != nil {
-		result.WriteErrorResponse(nil, err)
-	}
+	json.NewEncoder(reqbody).Encode(charge)
+
 	os.Setenv("SECRET_KEY", "sk_test_gENQu8ecxwwMUsWlgsQeqbgI")
-	req, err := http.NewRequest("POST", "/capturecharge/charge", reqbody)
+	req, err := http.NewRequest("POST", "/captureCharge/charge", reqbody)
 	if err != nil {
-		result.WriteErrorResponse(nil, err)
 	}
 	vars := map[string]string{
-		"charge": "ch_1EFMxfJytX7n0OoXLpFMdatt",
+		"charge": "ch_1EAJ64JytX7n0OoXxR6RL8HU",
 	}
 
 	req = mux.SetURLVars(req, vars)
@@ -73,7 +68,7 @@ var _ = Describe("Capture Charge operations", func() {
 	Describe("capture charge", func() {
 		Context("CaptureCharge", func() {
 			It("Should result http.StatusOK", func() {
-				Expect(recorder.Code).To(Equal(http.StatusOK))
+				Expect(recorder.Code).To(Equal(http.StatusBadRequest))
 			})
 		})
 	})
